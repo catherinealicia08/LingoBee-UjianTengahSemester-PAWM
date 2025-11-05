@@ -1,0 +1,351 @@
+.practice-root {
+  display: grid;
+  grid-template-columns: 200px 1fr 300px;
+  min-height: 100vh;
+  background: #f5f7fa;
+  font-family: 'Poppins', sans-serif;
+  gap: 0;
+}
+
+/* ========== MAIN CONTENT ========== */
+.practice-content {
+  padding: 24px 40px;
+  overflow-y: auto;
+  max-height: 100vh;
+}
+
+.top-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.level-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.streak {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.level {
+  font-weight: 700;
+  color: #0063a3;
+}
+
+.progress-bar {
+  width: 220px;
+  height: 12px;
+  background: #e0e0e0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+  transition: width 0.5s ease;
+}
+
+/* ========== BREADCRUMB ========== */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.breadcrumb-link {
+  color: #0063a3;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+  text-decoration: underline;
+  color: #004b7a;
+}
+
+.breadcrumb-separator {
+  color: #999;
+}
+
+.breadcrumb-current {
+  color: #333;
+  font-weight: 600;
+}
+
+/* ========== PRACTICE SECTIONS ========== */
+.practice-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.practice-section {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ========== SECTION HEADER ========== */
+.section-header {
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+
+.section-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.95;
+}
+
+.section-title {
+  font-size: 19px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.section-menu-btn {
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.05);
+}
+
+/* ========== PRACTICE PATH ========== */
+.practice-path {
+  position: relative;
+  min-height: 400px;
+  height: 400px;
+  padding: 40px;
+  background: linear-gradient(180deg, #e8f0f8 0%, #d4e6f7 100%);
+}
+
+/* SVG Path Lines */
+.path-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ========== BEE CHARACTER ========== */
+.bee-character {
+  position: absolute;
+  z-index: 5;
+  animation: float 3s ease-in-out infinite;
+}
+
+.bee-image {
+  width: 115px;
+  height: auto;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ========== PRACTICE NODES ========== */
+.practice-node {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.practice-node:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+.practice-node:active {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+
+.practice-node.unlocked {
+  background: #ffffff;
+  border: 5px solid #e5e5e5;
+}
+
+.practice-node.locked {
+  background: #e8e8e8;
+  border: 5px solid #d2d2d2;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.practice-node.completed {
+  background: linear-gradient(135deg, #fde68a 0%, #fbbf24 100%);
+  border: 5px solid #f59e0b;
+}
+
+/* Node Icons */
+.node-icon {
+  font-size: 34px;
+  display: block;
+  line-height: 1;
+}
+
+/* START Button Special Styling */
+.practice-node.start.unlocked {
+  background: #ffffff;
+  border: 5px solid #c084fc;
+  width: 90px;
+  height: 90px;
+  border-radius: 18px;
+  box-shadow: 0 6px 16px rgba(192, 132, 252, 0.3);
+}
+
+.practice-node.start.unlocked .start-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #a855f7;
+  margin-top: 3px;
+  letter-spacing: 0.5px;
+}
+
+.practice-node.start.unlocked .node-icon {
+  font-size: 30px;
+  color: #a855f7;
+}
+
+/* Specific Node Type Colors */
+.practice-node.star.unlocked {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 5px solid #fbbf24;
+}
+
+.practice-node.star.completed {
+  background: linear-gradient(135deg, #fde68a 0%, #fbbf24 100%);
+  border: 5px solid #f59e0b;
+}
+
+.practice-node.practice.unlocked {
+  background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
+  border: 5px solid #c084fc;
+}
+
+.practice-node.lesson.unlocked {
+  background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
+  border: 5px solid #c084fc;
+}
+
+.practice-node.book.locked {
+  background: #e8e8e8;
+  border: 5px solid #d2d2d2;
+}
+
+.practice-node.microphone.locked {
+  background: #e8e8e8;
+  border: 5px solid #d2d2d2;
+}
+
+.practice-node.lock.locked {
+  background: #e8e8e8;
+  border: 5px solid #d2d2d2;
+}
+
+/* Pulse Animation for START button */
+.practice-node.start.unlocked {
+  animation: pulse-start 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-start {
+  0%, 100% {
+    box-shadow: 0 6px 16px rgba(192, 132, 252, 0.3);
+  }
+  50% {
+    box-shadow: 0 8px 24px rgba(192, 132, 252, 0.5);
+  }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1200px) {
+  .practice-root {
+    grid-template-columns: 200px 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .practice-root {
+    grid-template-columns: 1fr;
+  }
+  
+  .practice-content {
+    padding: 16px;
+  }
+  
+  .practice-path {
+    min-height: 420px;
+    height: 420px;
+    padding: 20px;
+  }
+  
+  .bee-image {
+    width: 90px;
+  }
+  
+  .practice-node {
+    width: 62px;
+    height: 62px;
+  }
+  
+  .practice-node.start.unlocked {
+    width: 75px;
+    height: 75px;
+  }
+  
+  .node-icon {
+    font-size: 30px;
+  }
+}

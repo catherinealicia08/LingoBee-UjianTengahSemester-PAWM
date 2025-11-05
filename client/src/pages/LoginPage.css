@@ -1,0 +1,224 @@
+.login-root {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  min-height: 100vh;
+  width: 100%;
+  background: #fff;
+  overflow: hidden;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.login-left {
+  flex: 1;
+  min-width: 300px;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+.left-image {
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s ease;
+}
+
+.login-left:hover .left-image {
+  transform: scale(1.05);
+}
+
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, rgba(11,111,164,0.1) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.login-right {
+  flex: 1;
+  position: relative;
+  padding: 48px 64px 48px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: linear-gradient(135deg, #0b6fa4 0%, #004b6b 100%);
+  color: #fff;
+  min-width: 360px;
+  box-sizing: border-box;
+  animation: slideInRight 0.6s ease-out;
+}
+
+.logo-itb-white {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2));
+}
+
+.logo-itb-white:hover {
+  transform: rotate(10deg) scale(1.1);
+}
+
+.login-box {
+  width: 100%;
+  max-width: 420px;
+  text-align: left;
+  animation: fadeIn 0.8s ease-out 0.3s both;
+}
+
+.login-box h1 {
+  margin: 0 0 32px;
+  font-size: 36px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.field {
+  display: block;
+  margin-bottom: 20px;
+  color: rgba(255,255,255,0.9);
+  font-weight: 600;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.field span {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.field input {
+  width: 100%;
+  height: 44px;
+  padding: 10px 16px;
+  border-radius: 22px;
+  border: 2px solid transparent;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  outline: none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: all 0.3s ease;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.field input::placeholder { 
+  color: rgba(255,255,255,0.6); 
+}
+
+.field input:focus {
+  background: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.field input:hover:not(:focus) {
+  background: rgba(255,255,255,0.15);
+}
+
+.btn-login {
+  width: 100%;
+  margin-top: 24px;
+  height: 48px;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+  border-radius: 24px;
+  border: none;
+  color: #0b6fa4;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-login::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.3) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-login:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.btn-login:hover::before {
+  opacity: 1;
+}
+
+.btn-login:active {
+  transform: translateY(-1px);
+}
+
+.btn-login.loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.register-link {
+  margin-top: 24px;
+  text-align: center;
+  color: rgba(255,255,255,0.8);
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.register-link button {
+  background: none;
+  border: none;
+  color: #fff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: color 0.3s ease;
+}
+
+.register-link button:hover {
+  color: #ffd700;
+}
+
+/* Animations */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 900px) {
+  .login-root { flex-direction: column; }
+  .left-image { min-height: 200px; max-height: 40vh; }
+  .login-right { padding: 32px 24px; width: 100%; }
+  .logo-itb-white { right: 16px; top: 16px; width: 48px; height: 48px; }
+  .login-box h1 { font-size: 28px; margin-bottom: 24px; }
+}
