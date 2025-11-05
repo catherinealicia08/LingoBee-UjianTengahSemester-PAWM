@@ -8,18 +8,18 @@ import './PracticePage.css';
 export default function PracticePage() {
   const navigate = useNavigate();
   
-  // Practice sections data - 3 sections with 5-6 nodes each
-  const [sections, setSections] = useState([
+  // Initial sections data
+  const initialSections = [
     {
       id: 1,
       section: 'SECTION 2, UNIT 10',
       title: 'Say where people are from',
       color: '#c084fc', // purple
       nodes: [
-        { id: 1, type: 'star', unlocked: true, completed: true, position: { top: '15%', left: '28%' } },
-        { id: 2, type: 'practice', unlocked: true, completed: false, position: { top: '30%', left: '38%' } },
-        { id: 3, type: 'lesson', unlocked: true, completed: false, position: { top: '48%', left: '48%' } },
-        { id: 4, type: 'star', unlocked: true, completed: false, position: { top: '65%', left: '58%' } },
+        { id: 1, type: 'star', unlocked: true, completed: false, position: { top: '15%', left: '28%' } },
+        { id: 2, type: 'practice', unlocked: false, completed: false, position: { top: '30%', left: '38%' } },
+        { id: 3, type: 'lesson', unlocked: false, completed: false, position: { top: '48%', left: '48%' } },
+        { id: 4, type: 'star', unlocked: false, completed: false, position: { top: '65%', left: '58%' } },
         { id: 5, type: 'book', unlocked: false, completed: false, position: { top: '82%', left: '48%' } },
       ]
     },
@@ -50,38 +50,80 @@ export default function PracticePage() {
         { id: 16, type: 'chest', unlocked: false, completed: false, position: { top: '75%', left: '48%' } },
       ]
     }
-  ]);
+  ];
 
-  // Check if section is completed
-  function isSectionCompleted(sectionNodes) {
-    return sectionNodes.every(node => node.completed || !node.unlocked);
-  }
+  const [sections, setSections] = useState(initialSections);
 
-  // Update sections based on completion
+  // Load completion status from localStorage when component mounts
   useEffect(() => {
-    setSections(prevSections => {
-      const updatedSections = [...prevSections];
-      
-      // Check each section and lock subsequent sections if not completed
-      for (let i = 0; i < updatedSections.length - 1; i++) {
-        const currentSectionCompleted = isSectionCompleted(updatedSections[i].nodes);
-        
-        // If current section is not completed, lock all nodes in next sections
-        if (!currentSectionCompleted) {
-          for (let j = i + 1; j < updatedSections.length; j++) {
-            updatedSections[j].nodes = updatedSections[j].nodes.map(node => ({
-              ...node,
-              unlocked: false
-            }));
-          }
-          break;
-        }
-      }
-      
-      return updatedSections;
-    });
+    loadCompletionStatus();
   }, []);
 
+  // Load and apply completion status
+  function loadCompletionStatus() {
+    const completedNodes = JSON.parse(localStorage.getItem('completedNodes') || '[]');
+    console.log('Loaded completed nodes:', completedNodes); // Debug
+    
+    setSections(prevSections => {
+      const updatedSections = prevSections.map(section => {
+        const updatedNodes = section.nodes.map((node, nodeIndex) => {
+          const nodeKey = `${section.id}-${node.id}`;
+          const isCompleted = completedNodes.includes(nodeKey);
+          
+          // Determine if node should be unlocked
+          let shouldUnlock = node.unlocked; // Keep existing unlock status
+          
+          // First node of first section is always unlocked
+          if (section.id === 1 && nodeIndex === 0) {
+            shouldUnlock = true;
+          }
+          
+          // If previous node in same section is completed, unlock this node
+          if (nodeIndex > 0) {
+            const prevNodeKey = `${section.id}-${section.nodes[nodeIndex - 1].id}`;
+            if (completedNodes.includes(prevNodeKey)) {
+              shouldUnlock = true;
+            }
+          }
+          
+          // If all previous section completed and this is first node of next section
+          if (nodeIndex === 0 && section.id > 1) {
+            const prevSectionId = section.id - 1;
+            const prevSection = prevSections.find(s => s.id === prevSectionId);
+            if (prevSection) {
+              const allPrevCompleted = prevSection.nodes.every(n => {
+                const nKey = `${prevSectionId}-${n.id}`;
+                return completedNodes.includes(nKey);
+              });
+              if (allPrevCompleted) {
+                shouldUnlock = true;
+              }
+            }
+          }
+          
+          return {
+            ...node,
+            completed: isCompleted,
+            unlocked: shouldUnlock
+          };
+        });
+
+        return {
+          ...section,
+          nodes: updatedNodes
+        };
+      });
+
+      return updatedSections;
+    });
+  }
+
+  // Check if ALL nodes in section are completed
+  function isSectionCompleted(sectionNodes) {
+    return sectionNodes.every(node => node.completed);
+  }
+
+  // Handle node click - Navigate to practice details
   function handleNodeClick(node, section, sectionIndex) {
     // Check if previous section is completed
     if (sectionIndex > 0) {
@@ -94,45 +136,22 @@ export default function PracticePage() {
       }
     }
 
-    if (node.unlocked) {
-      // Simulate completing the node
-      setSections(prevSections => {
-        const updatedSections = [...prevSections];
-        const sectionToUpdate = updatedSections[sectionIndex];
-        const nodeIndex = sectionToUpdate.nodes.findIndex(n => n.id === node.id);
-        
-        if (nodeIndex !== -1) {
-          // Mark current node as completed
-          sectionToUpdate.nodes[nodeIndex].completed = true;
-          
-          // Unlock next node in the same section
-          if (nodeIndex < sectionToUpdate.nodes.length - 1) {
-            sectionToUpdate.nodes[nodeIndex + 1].unlocked = true;
-          }
-          
-          // Check if current section is now completed
-          const currentSectionCompleted = isSectionCompleted(sectionToUpdate.nodes);
-          
-          // If current section is completed and there's a next section, unlock first node of next section
-          if (currentSectionCompleted && sectionIndex < updatedSections.length - 1) {
-            updatedSections[sectionIndex + 1].nodes[0].unlocked = true;
-          }
-        }
-        
-        return updatedSections;
-      });
-
-      alert(`Starting: ${section.title}\nNode Type: ${node.type}\nNode ID: ${node.id}\n\n✅ Node completed!`);
-      // Navigate to practice exercise page
-      // navigate(`/practice/${section.id}/${node.id}`);
-    } else {
+    if (!node.unlocked) {
       alert('🔒 This lesson is locked! Complete previous lessons first.');
+      return;
     }
+
+    // Navigate to practice details page
+    navigate(`/practice/${section.id}/${node.id}`);
   }
 
   function getNodeIcon(type, unlocked, completed) {
     if (!unlocked) {
       return '🔒';
+    }
+    
+    if (completed) {
+      return '✅'; // Show checkmark for completed
     }
     
     switch(type) {
@@ -159,10 +178,15 @@ export default function PracticePage() {
   function getSectionStatus(sectionIndex) {
     if (sectionIndex === 0) return 'active';
     
-    const previousSection = sections[sectionIndex - 1];
-    const previousSectionCompleted = isSectionCompleted(previousSection.nodes);
+    // Check if ALL previous sections are fully completed
+    for (let i = 0; i < sectionIndex; i++) {
+      const previousSectionCompleted = isSectionCompleted(sections[i].nodes);
+      if (!previousSectionCompleted) {
+        return 'locked';
+      }
+    }
     
-    return previousSectionCompleted ? 'active' : 'locked';
+    return 'active';
   }
 
   return (
@@ -251,7 +275,7 @@ export default function PracticePage() {
                             key={`line-${node.id}`}
                             d={`M ${x1} ${y1} Q ${controlX} ${controlY} ${x2} ${y2}`}
                             fill="none"
-                            stroke={current.unlocked ? '#cbd5e1' : '#e5e7eb'}
+                            stroke={current.completed ? '#10b981' : current.unlocked ? '#cbd5e1' : '#e5e7eb'}
                             strokeWidth="0.5"
                             strokeDasharray={current.unlocked ? '0' : '2,2'}
                           />

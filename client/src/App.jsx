@@ -7,6 +7,7 @@ import AssignmentPage from './pages/AssignmentPage';
 import AssignmentDetailsPage from './pages/AssignmentDetailsPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import PracticePage from './pages/PracticePage';
+import PracticeDetailsPage from './pages/PracticeDetailsPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/assignment/:id" element={<AssignmentDetailsPage />} />
         <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/practice" element={<PracticePage />} />
+        <Route path="/practice/:sectionId/:nodeId" element={<PracticeDetailsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
