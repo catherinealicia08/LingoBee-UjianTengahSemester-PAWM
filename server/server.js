@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
       auth: '/api/auth',
       todos: '/api/todos',
       assignments: '/api/assignments',
-      practice: '/api/practice' // ✅ ADD THIS
+      practice: '/api/practice'
     }
   });
 });
