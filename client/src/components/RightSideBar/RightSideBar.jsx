@@ -1,31 +1,74 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useApi } from '../../hooks/useApi';
+import { authService } from '../../services/authService';
+import { todoService } from '../../services/todoService';
 import './RightSidebar.css';
 
-export default function RightSidebar({ 
-  userProfile = {
-    name: 'Catherine Alicia N',
-    school: 'Sekolah Teknik Elektro dan Informatika',
-    nim: '19623247'
-  }
-}) {
+export default function RightSidebar() {
+  const dropdownRef = useRef(null);
+  
   const [currentTime, setCurrentTime] = useState(new Date());
   const [calendarDate, setCalendarDate] = useState(new Date());
   const [newTodo, setNewTodo] = useState('');
   const [newDeadline, setNewDeadline] = useState('');
   const [draggedItem, setDraggedItem] = useState(null);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [todos, setTodos] = useState([]);
 
-  const [todos, setTodos] = useState([
-    { id: 1, text: 'Tugas Writing Essay #2', deadline: 'Batas Tenggat: 8 April 2025', checked: false },
-    { id: 2, text: 'Tugas Writing Essay #2', deadline: 'Batas Tenggat: 8 April 2025', checked: false },
-    { id: 3, text: 'Tugas Writing Essay #2', deadline: 'Batas Tenggat: 8 April 2025', checked: false },
-  ]);
+  // ✅ Use custom hook for profile
+  const { data: profileData } = useApi(() => authService.getProfile(), []);
+  
+  // ✅ Use custom hook for todos
+  const { data: todosData, loading: isLoadingTodos, refetch: refetchTodos } = useApi(() => todoService.getTodos(), []);
 
-  const [notifications] = useState([
-    { id: 1, text: "Don't Let Your Streak End!", subtext: "Start Practicing Now!" },
-    { id: 2, text: "Don't Let Your Streak End!", subtext: "Start Practicing Now!" },
-    { id: 3, text: "Don't Let Your Streak End!", subtext: "Start Practicing Now!" },
-    { id: 4, text: "Don't Let Your Streak End!", subtext: "Start Practicing Now!" },
-  ]);
+  // Update todos when data changes
+  useEffect(() => {
+    if (todosData?.success && todosData.todos) {
+      setTodos(todosData.todos);
+    }
+  }, [todosData]);
+
+  // Get user profile
+  const getUserProfile = () => {
+    if (profileData?.success && profileData.user) {
+      return {
+        name: profileData.user.full_name,
+        fakultas: profileData.user.fakultas || 'Institut Teknologi Bandung',
+        nim: profileData.user.nim
+      };
+    }
+    
+    const localUser = authService.getCurrentUser();
+    if (localUser) {
+      return {
+        name: localUser.full_name,
+        fakultas: localUser.fakultas || 'Institut Teknologi Bandung',
+        nim: localUser.nim
+      };
+    }
+    
+    return {
+      name: 'Loading...',
+      fakultas: 'Loading...',
+      nim: 'Loading...'
+    };
+  };
+
+  const userProfile = getUserProfile();
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowProfileDropdown(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Update time every second
   useEffect(() => {
@@ -36,33 +79,80 @@ export default function RightSidebar({
     return () => clearInterval(timer);
   }, []);
 
-  // Todo Functions
-  function toggleTodo(id) {
-    setTodos(todos.map(todo => 
-      todo.id === id ? { ...todo, checked: !todo.checked } : todo
-    ));
+  function toggleProfileDropdown() {
+    setShowProfileDropdown(!showProfileDropdown);
   }
 
-  function addTodo() {
+  async function handleLogout() {
+    const confirmLogout = window.confirm('Are you sure you want to logout?');
+    
+    if (confirmLogout) {
+      try {
+        console.log('🚪 Logging out...');
+        await authService.logout();
+        console.log('✅ Logout successful');
+        window.location.href = '/';
+      } catch (error) {
+        console.error('❌ Logout error:', error);
+        window.location.href = '/';
+      }
+    }
+  }
+
+  async function toggleTodo(id) {
+    const todo = todos.find(t => t.id === id);
+    if (!todo) return;
+
+    // Optimistic update
+    setTodos(todos.map(t => 
+      t.id === id ? { ...t, checked: !t.checked } : t
+    ));
+
+    const response = await todoService.updateTodo(id, { checked: !todo.checked });
+    
+    if (!response.success) {
+      console.error('Failed to toggle todo:', response.error);
+      // Revert on error
+      setTodos(todos.map(t => 
+        t.id === id ? { ...t, checked: todo.checked } : t
+      ));
+    }
+  }
+
+  async function addTodo() {
     if (newTodo.trim() === '') return;
     
-    const newTodoItem = {
-      id: Date.now(),
-      text: newTodo,
-      deadline: newDeadline || 'Tidak ada batas tenggat',
-      checked: false
+    const todoData = {
+      text: newTodo.trim(),
+      deadline: newDeadline || null
     };
+
+    const response = await todoService.createTodo(todoData);
     
-    setTodos([...todos, newTodoItem]);
-    setNewTodo('');
-    setNewDeadline('');
+    if (response.success && response.todo) {
+      setTodos([...todos, response.todo]);
+      setNewTodo('');
+      setNewDeadline('');
+      console.log('✅ Todo created:', response.todo);
+    } else {
+      console.error('Failed to create todo:', response.error);
+      alert('Failed to create todo. Please try again.');
+    }
   }
 
-  function deleteTodo(id) {
+  async function deleteTodo(id) {
+    const originalTodos = [...todos];
     setTodos(todos.filter(todo => todo.id !== id));
+
+    const response = await todoService.deleteTodo(id);
+    
+    if (!response.success) {
+      console.error('Failed to delete todo:', response.error);
+      setTodos(originalTodos);
+      alert('Failed to delete todo. Please try again.');
+    }
   }
 
-  // Drag and Drop Functions
   function handleDragStart(e, index) {
     setDraggedItem(index);
     e.dataTransfer.effectAllowed = 'move';
@@ -83,11 +173,21 @@ export default function RightSidebar({
     setTodos(newTodos);
   }
 
-  function handleDragEnd() {
+  async function handleDragEnd() {
     setDraggedItem(null);
+    
+    const todosWithPosition = todos.map((todo, index) => ({
+      id: todo.id,
+      position: index
+    }));
+
+    const response = await todoService.reorderTodos(todosWithPosition);
+    
+    if (!response.success) {
+      console.error('Failed to save todo order:', response.error);
+    }
   }
 
-  // Calendar functions
   function getDaysInMonth(date) {
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -125,22 +225,34 @@ export default function RightSidebar({
     hour12: true 
   });
 
-  const dayNames = ['SUN', 'MON', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
   return (
     <aside className="right-sidebar">
-      {/* User Profile Info */}
-      <div className="user-profile-card">
-        <img 
-          src={`https://ui-avatars.com/api/?name=${encodeURIComponent(userProfile.name)}&background=0063a3&color=fff&size=80`}
-          alt="User" 
-          className="profile-avatar" 
-        />
+      {/* User Profile Info with Dropdown */}
+      <div className="user-profile-card" ref={dropdownRef}>
+        <div className="profile-avatar-wrapper" onClick={toggleProfileDropdown}>
+          <img 
+            src={`https://ui-avatars.com/api/?name=${encodeURIComponent(userProfile.name)}&background=0063a3&color=fff&size=80`}
+            alt="User" 
+            className="profile-avatar" 
+          />
+        </div>
+        
         <div className="profile-details">
           <h3>{userProfile.name}</h3>
-          <p>{userProfile.school}</p>
+          <p>{userProfile.fakultas}</p>
           <span className="profile-nim">{userProfile.nim}</span>
         </div>
+
+        {showProfileDropdown && (
+          <div className="profile-dropdown">
+            <button className="dropdown-item" onClick={handleLogout}>
+              <span className="dropdown-icon">🚪</span>
+              Logout
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Date & Time Pills */}
@@ -180,29 +292,12 @@ export default function RightSidebar({
         </div>
       </div>
 
-      {/* Notifications */}
-      <div className="notifications-widget">
-        <h3>Notification</h3>
-        <div className="notification-list">
-          {notifications.map(notif => (
-            <div key={notif.id} className="notification-item">
-              <div className="notif-icon">🔔</div>
-              <div className="notif-content">
-                <p className="notif-text">{notif.text}</p>
-                <p className="notif-subtext">{notif.subtext}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* To Do List */}
       <div className="todo-widget">
         <div className="todo-header">
           <h3>To Do List</h3>
         </div>
 
-        {/* Add Todo Form */}
         <div className="todo-add-form">
           <input 
             type="text"
@@ -223,36 +318,41 @@ export default function RightSidebar({
           <button onClick={addTodo} className="todo-add-btn">+ Add</button>
         </div>
 
-        {/* Todo List */}
         <div className="todo-list">
-          {todos.map((todo, index) => (
-            <div
-              key={todo.id}
-              draggable
-              onDragStart={(e) => handleDragStart(e, index)}
-              onDragOver={(e) => handleDragOver(e, index)}
-              onDragEnd={handleDragEnd}
-              className={`todo-item ${todo.checked ? 'checked' : ''} ${draggedItem === index ? 'dragging' : ''}`}
-            >
-              <div className="todo-drag-handle">⋮⋮</div>
-              <input 
-                type="checkbox" 
-                checked={todo.checked}
-                onChange={() => toggleTodo(todo.id)}
-              />
-              <div className="todo-content">
-                <p className="todo-text">{todo.text}</p>
-                <p className="todo-deadline">{todo.deadline}</p>
-              </div>
-              <button 
-                className="todo-delete-btn"
-                onClick={() => deleteTodo(todo.id)}
-                title="Delete"
+          {isLoadingTodos ? (
+            <p className="todo-empty">Loading todos...</p>
+          ) : todos.length === 0 ? (
+            <p className="todo-empty">Add your to do list!</p>
+          ) : (
+            todos.map((todo, index) => (
+              <div
+                key={todo.id}
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragOver={(e) => handleDragOver(e, index)}
+                onDragEnd={handleDragEnd}
+                className={`todo-item ${todo.checked ? 'checked' : ''} ${draggedItem === index ? 'dragging' : ''}`}
               >
-                ✕
-              </button>
-            </div>
-          ))}
+                <div className="todo-drag-handle">⋮⋮</div>
+                <input 
+                  type="checkbox" 
+                  checked={todo.checked}
+                  onChange={() => toggleTodo(todo.id)}
+                />
+                <div className="todo-content">
+                  <p className="todo-text">{todo.text}</p>
+                  <p className="todo-deadline">{todo.deadline || 'No deadline'}</p>
+                </div>
+                <button 
+                  className="todo-delete-btn"
+                  onClick={() => deleteTodo(todo.id)}
+                  title="Delete"
+                >
+                  ✕
+                </button>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </aside>

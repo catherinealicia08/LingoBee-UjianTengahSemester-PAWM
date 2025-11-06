@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LeftSidebar from '../components/LeftSidebar';
 import RightSidebar from '../components/RightSidebar';
+import TopHeader from '../components/TopHeader/TopHeader'; // ✅ Import component
 import './HomePage.css';
 
 export default function HomePage() {
@@ -12,7 +13,7 @@ export default function HomePage() {
   const [featuredNews] = useState([
     {
       id: 1,
-      title: '1001 Ways to Master yout IELTS Test',
+      title: '1001 Ways to Master your IELTS Test',
       description: 'Pernahkah anda merangga menketiga ujian IELTS bagan untuk meningkatkan skon tujuan IELTS, Ini terlaku tricour writing, articol dll membangun catto langkah danni untuk gesalt age mean uslu monay dengan percpan dil',
       image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'
     },
@@ -54,23 +55,12 @@ export default function HomePage() {
     <div className="home-root">
       <LeftSidebar activePage="dashboard" />
 
-      {/* Main Content */}
       <main className="main-content">
-        {/* Header with Level Info Only */}
-        <header className="top-header">
-          <div className="level-info">
-            <span className="streak">1 🔥</span>
-            <span className="level">Lvl 10</span>
-            <div className="progress-bar">
-              <div className="progress-fill" style={{ width: '60%' }}></div>
-            </div>
-          </div>
-        </header>
+        {/* ✅ Gunakan TopHeader component */}
+        <TopHeader />
 
-        {/* Dashboard Title */}
         <h1 className="page-title">Dashboard</h1>
 
-        {/* Search Bar */}
         <div className="search-bar">
           <input 
             type="text" 
@@ -81,7 +71,6 @@ export default function HomePage() {
           <button className="search-btn">🔍</button>
         </div>
 
-        {/* Featured Carousel */}
         <div className="featured-carousel">
           <button className="carousel-btn prev" onClick={prevFeatured}>
             ‹
@@ -102,7 +91,6 @@ export default function HomePage() {
             ›
           </button>
 
-          {/* Carousel Indicators */}
           <div className="carousel-indicators">
             {featuredNews.map((_, index) => (
               <button 
@@ -114,7 +102,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Materi Section */}
         <section className="materi-section">
           <h2>Materi</h2>
           

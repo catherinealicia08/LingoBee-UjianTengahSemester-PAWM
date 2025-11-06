@@ -14,42 +14,7 @@
   max-height: 100vh;
 }
 
-.top-header {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 24px;
-}
 
-.level-info {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.streak {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.level {
-  font-weight: 700;
-  color: #0063a3;
-}
-
-.progress-bar {
-  width: 220px;
-  height: 12px;
-  background: #e0e0e0;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
-  transition: width 0.5s ease;
-}
 
 .page-title {
   font-size: 32px;
@@ -378,3 +343,4 @@
     align-items: flex-start;
   }
 }
+

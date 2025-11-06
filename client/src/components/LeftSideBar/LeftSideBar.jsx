@@ -10,7 +10,6 @@ export default function LeftSidebar({ activePage }) {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', path: '/homepage' },
     { id: 'assignment', label: 'Assignment', path: '/assignment' },
-    { id: 'leaderboard', label: 'Leaderboard', path: '/leaderboard' },
     { id: 'practice', label: 'Practice', path: '/practice' }
   ];
 
