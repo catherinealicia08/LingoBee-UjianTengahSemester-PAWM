@@ -4,17 +4,20 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import todoRoutes from './routes/todoRoutes.js';
 import assignmentRoutes from './routes/assignmentRoutes.js';
-import practiceRoutes from './routes/practiceRoutes.js'; // ✅ ADD THIS
-import dashboardRoutes from './routes/dashboardRoutes.js'; // Tambahkan import di bagian atas
+import practiceRoutes from './routes/practiceRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// CORS configuration
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000'],
+  origin: [
+    'http://localhost:5173', 
+    'http://localhost:3000',
+    'https://lingobee.vercel.app',
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -23,20 +26,17 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Logging middleware
 app.use((req, res, next) => {
   console.log(`📨 ${req.method} ${req.url}`);
   next();
 });
 
-// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/todos', todoRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/practice', practiceRoutes); 
 app.use('/api/dashboard', dashboardRoutes); 
 
-// Root endpoint
 app.get('/', (req, res) => {
   res.json({ 
     message: 'LingoBee API is running! 🐝',
@@ -50,7 +50,14 @@ app.get('/', (req, res) => {
   });
 });
 
-// 404 handler
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'Server is running',
+    timestamp: new Date().toISOString()
+  });
+});
+
 app.use((req, res) => {
   res.status(404).json({ 
     success: false,
@@ -58,7 +65,6 @@ app.use((req, res) => {
   });
 });
 
-// Error handler
 app.use((err, req, res, next) => {
   console.error('❌ Error:', err);
   res.status(500).json({ 
@@ -67,6 +73,10 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`✅ Server running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;
