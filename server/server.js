@@ -12,37 +12,25 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
+// ✅ CORS Configuration
 app.use(cors({
   origin: [
-    'http://localhost:5173', 
+    'http://localhost:5173',
     'http://localhost:3000',
-    'https://lingobee.vercel.app',
+    'https://lingobee-frontend.vercel.app'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-app.use((req, res, next) => {
-  console.log(`📨 ${req.method} ${req.url}`);
-  next();
-});
-
-
-app.use('/api/auth', authRoutes);
-app.use('/api/todos', todoRoutes);
-app.use('/api/assignments', assignmentRoutes);
-app.use('/api/practice', practiceRoutes); 
-app.use('/api/dashboard', dashboardRoutes); 
-
-
+// Root endpoint
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: 'LingoBee API is running! 🐝',
     endpoints: {
       auth: '/api/auth',
@@ -55,7 +43,7 @@ app.get('/', (req, res) => {
   });
 });
 
-
+// Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK', 
@@ -64,28 +52,29 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/todos', todoRoutes);
+app.use('/api/assignments', assignmentRoutes);
+app.use('/api/practice', practiceRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
-app.use((req, res) => {
-  res.status(404).json({ 
-    success: false,
-    error: `Route ${req.url} not found` 
-  });
-});
-
-
+// Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('❌ Error:', err);
+  console.error(err.stack);
   res.status(500).json({ 
-    success: false,
-    error: err.message || 'Internal server error' 
+    error: 'Something went wrong!',
+    message: err.message 
   });
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`✅ Server running on http://localhost:${PORT}`);
-  });
-}
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'Route not found' });
+});
 
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 export default app;
