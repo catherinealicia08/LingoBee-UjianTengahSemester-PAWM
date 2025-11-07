@@ -12,6 +12,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+
 app.use(cors({
   origin: [
     'http://localhost:5173', 
@@ -26,16 +27,19 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 app.use((req, res, next) => {
   console.log(`📨 ${req.method} ${req.url}`);
   next();
 });
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/todos', todoRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/practice', practiceRoutes); 
 app.use('/api/dashboard', dashboardRoutes); 
+
 
 app.get('/', (req, res) => {
   res.json({ 
@@ -45,10 +49,12 @@ app.get('/', (req, res) => {
       todos: '/api/todos',
       assignments: '/api/assignments',
       practice: '/api/practice',
-      dashboard: '/api/dashboard' 
+      dashboard: '/api/dashboard',
+      health: '/api/health'  /
     }
   });
 });
+
 
 app.get('/api/health', (req, res) => {
   res.json({ 
@@ -58,12 +64,14 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+
 app.use((req, res) => {
   res.status(404).json({ 
     success: false,
     error: `Route ${req.url} not found` 
   });
 });
+
 
 app.use((err, req, res, next) => {
   console.error('❌ Error:', err);
@@ -78,5 +86,6 @@ if (process.env.NODE_ENV !== 'production') {
     console.log(`✅ Server running on http://localhost:${PORT}`);
   });
 }
+
 
 export default app;
