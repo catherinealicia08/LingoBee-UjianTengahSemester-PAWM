@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.js';
 import todoRoutes from './routes/todoRoutes.js';
 import assignmentRoutes from './routes/assignmentRoutes.js';
 import practiceRoutes from './routes/practiceRoutes.js'; // ✅ ADD THIS
+import dashboardRoutes from './routes/dashboardRoutes.js'; // Tambahkan import di bagian atas
 
 dotenv.config();
 
@@ -32,7 +33,8 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/todos', todoRoutes);
 app.use('/api/assignments', assignmentRoutes);
-app.use('/api/practice', practiceRoutes); // ✅ ADD THIS
+app.use('/api/practice', practiceRoutes); 
+app.use('/api/dashboard', dashboardRoutes); 
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -42,7 +44,8 @@ app.get('/', (req, res) => {
       auth: '/api/auth',
       todos: '/api/todos',
       assignments: '/api/assignments',
-      practice: '/api/practice'
+      practice: '/api/practice',
+      dashboard: '/api/dashboard' 
     }
   });
 });

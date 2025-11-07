@@ -1,47 +1,114 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LeftSidebar from '../components/LeftSidebar';
 import RightSidebar from '../components/RightSidebar';
-import TopHeader from '../components/TopHeader/TopHeader'; // ✅ Import component
+import TopHeader from '../components/TopHeader/TopHeader';
+import { dashboardService } from '../services/dashboardService';
 import './HomePage.css';
 
 export default function HomePage() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [currentFeatured, setCurrentFeatured] = useState(0);
+  const [featuredNews, setFeaturedNews] = useState([]);
+  const [materials, setMaterials] = useState([]);
+  const [filters, setFilters] = useState({
+    chapter: '',
+    category: '',
+    search: ''
+  });
+  const [availableFilters, setAvailableFilters] = useState({
+    chapters: [],
+    categories: []
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [featuredNews] = useState([
-    {
-      id: 1,
-      title: '1001 Ways to Master your IELTS Test',
-      description: 'Pernahkah anda merangga menketiga ujian IELTS bagan untuk meningkatkan skon tujuan IELTS, Ini terlaku tricour writing, articol dll membangun catto langkah danni untuk gesalt age mean uslu monay dengan percpan dil',
-      image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'
-    },
-    {
-      id: 2,
-      title: 'Master English Grammar in 30 Days',
-      description: 'Comprehensive guide to improve your grammar skills with daily exercises and practice tests. Perfect for beginners to advanced learners.',
-      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400'
-    },
-    {
-      id: 3,
-      title: 'TOEFL Speaking Strategies',
-      description: 'Learn proven strategies to ace your TOEFL speaking section with confidence. Includes sample answers and expert tips.',
-      image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400'
-    },
-  ]);
+  // Get token from localStorage
+  const token = localStorage.getItem('access_token');
 
-  const [materials] = useState([
-    { id: 1, title: 'Mastering Simple Present: Dairy...', level: 'Introduce to simple...', date: 'Minggu, 22 April 2025' },
-    { id: 2, title: 'Action Verbs & Phrasal Verbs for...', level: 'cut, business & media...', date: 'Rabu, 10 Juni 2025' },
-    { id: 3, title: 'Understanding Simple Past Tense...', level: 'talking the past', date: 'Minggu, 3 Agustus 2025' },
-    { id: 4, title: 'Reading a Travel Blog: My Worst...', level: 'n4 cycle fom...', date: 'Minggu, 22 April 2025' },
-    { id: 5, title: 'Prepositions of Place: In, On, At...', level: 'position & direction...', date: 'Minggu, 22 September 2025' },
-    { id: 6, title: 'Listening to Product Reviews and ...', level: 'Comparing a two b study...', date: 'Minggu, 17 Agustus 2025' },
-    { id: 7, title: 'Reading Simple Public Notices a...', level: 'Introduced b simple...', date: 'Minggu, 22 April 2025' },
-    { id: 8, title: 'Describing Your Weekend: Using ...', level: 'cut b business & media...', date: 'Rabu, 18 Juni 2025' },
-    { id: 9, title: 'Listening to Historical Facts and ...', level: 'talking the past', date: 'Rabu, 18 Juni 2025' },
-  ]);
+  // Fetch featured news
+  useEffect(() => {
+    const fetchFeaturedNews = async () => {
+      try {
+        const response = await dashboardService.getFeaturedNews(token);
+        
+        if (response.success) {
+          setFeaturedNews(response.news);
+        } else {
+          console.error('Failed to fetch featured news:', response.error);
+          setFeaturedNews([]);
+        }
+      } catch (err) {
+        console.error('Error fetching featured news:', err);
+        setFeaturedNews([]);
+      }
+    };
+
+    if (token) {
+      fetchFeaturedNews();
+    }
+  }, [token]);
+
+  // Fetch materials
+  useEffect(() => {
+    const fetchMaterials = async () => {
+      setLoading(true);
+      try {
+        const response = await dashboardService.getMaterials(token, filters);
+        
+        if (response.success) {
+          setMaterials(response.materials);
+          setError(null);
+        } else {
+          console.error('Failed to fetch materials:', response.error);
+          setError('Gagal memuat materi');
+          setMaterials([]);
+        }
+      } catch (err) {
+        console.error('Error fetching materials:', err);
+        setError('Terjadi kesalahan saat memuat materi');
+        setMaterials([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (token) {
+      fetchMaterials();
+    } else {
+      setLoading(false);
+    }
+  }, [token, filters]);
+
+  // Fetch material filters
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const response = await dashboardService.getMaterialFilters(token);
+        
+        if (response.success) {
+          setAvailableFilters(response.filters);
+        }
+      } catch (err) {
+        console.error('Error fetching filters:', err);
+      }
+    };
+
+    if (token) {
+      fetchFilters();
+    }
+  }, [token]);
+
+  // Handle search
+  const handleSearch = () => {
+    setFilters(prev => ({ ...prev, search: searchQuery }));
+  };
+
+  // Handle filter change
+  const handleFilterChange = (filterType, value) => {
+    setFilters(prev => ({ ...prev, [filterType]: value }));
+  };
 
   function nextFeatured() {
     setCurrentFeatured((prev) => (prev + 1) % featuredNews.length);
@@ -56,7 +123,6 @@ export default function HomePage() {
       <LeftSidebar activePage="dashboard" />
 
       <main className="main-content">
-        {/* ✅ Gunakan TopHeader component */}
         <TopHeader />
 
         <h1 className="page-title">Dashboard</h1>
@@ -67,69 +133,104 @@ export default function HomePage() {
             placeholder="Cari Sesuatu..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
           />
-          <button className="search-btn">🔍</button>
+          <button className="search-btn" onClick={handleSearch}>🔍</button>
         </div>
 
-        <div className="featured-carousel">
-          <button className="carousel-btn prev" onClick={prevFeatured}>
-            ‹
-          </button>
-          
-          <div className="featured-card">
-            <div className="featured-image" style={{ 
-              backgroundImage: `url(${featuredNews[currentFeatured].image})` 
-            }}></div>
-            <div className="featured-content">
-              <h2>{featuredNews[currentFeatured].title}</h2>
-              <p>{featuredNews[currentFeatured].description}</p>
-              <button className="read-btn">Read</button>
+        {featuredNews.length > 0 ? (
+          <div className="featured-carousel">
+            <button className="carousel-btn prev" onClick={prevFeatured}>
+              ‹
+            </button>
+            
+            <div className="featured-card">
+              <div className="featured-image" style={{ 
+                backgroundImage: `url(${featuredNews[currentFeatured].image_url})` 
+              }}></div>
+              <div className="featured-content">
+                <h2>{featuredNews[currentFeatured].title}</h2>
+                <p>{featuredNews[currentFeatured].description}</p>
+                <button className="read-btn">Read</button>
+              </div>
+            </div>
+
+            <button className="carousel-btn next" onClick={nextFeatured}>
+              ›
+            </button>
+
+            <div className="carousel-indicators">
+              {featuredNews.map((_, index) => (
+                <button 
+                  key={index}
+                  className={`indicator ${index === currentFeatured ? 'active' : ''}`}
+                  onClick={() => setCurrentFeatured(index)}
+                />
+              ))}
             </div>
           </div>
-
-          <button className="carousel-btn next" onClick={nextFeatured}>
-            ›
-          </button>
-
-          <div className="carousel-indicators">
-            {featuredNews.map((_, index) => (
-              <button 
-                key={index}
-                className={`indicator ${index === currentFeatured ? 'active' : ''}`}
-                onClick={() => setCurrentFeatured(index)}
-              />
-            ))}
-          </div>
-        </div>
+        ) : (
+          <div className="no-featured">Tidak ada featured news</div>
+        )}
 
         <section className="materi-section">
           <h2>Materi</h2>
           
           <div className="materi-filters">
-            <select className="filter-select">
-              <option>Bab</option>
+            <select 
+              className="filter-select"
+              value={filters.chapter}
+              onChange={(e) => handleFilterChange('chapter', e.target.value)}
+            >
+              <option value="">Semua Bab</option>
+              {availableFilters.chapters.map((chapter, idx) => (
+                <option key={idx} value={chapter}>{chapter}</option>
+              ))}
             </select>
-            <select className="filter-select">
-              <option>Keterampilan</option>
+            
+            <select 
+              className="filter-select"
+              value={filters.category}
+              onChange={(e) => handleFilterChange('category', e.target.value)}
+            >
+              <option value="">Semua Kategori</option>
+              {availableFilters.categories.map((category, idx) => (
+                <option key={idx} value={category}>{category}</option>
+              ))}
             </select>
-            <select className="filter-select">
-              <option>Select an Option</option>
-            </select>
-            <button className="search-btn">🔍</button>
+            
+            <button className="search-btn" onClick={handleSearch}>🔍</button>
           </div>
 
-          <div className="materi-grid">
-            {materials.map(material => (
-              <div key={material.id} className="materi-card">
-                <div className="materi-image"></div>
-                <div className="materi-info">
-                  <h3>{material.title}</h3>
-                  <p className="materi-level">{material.level}</p>
-                  <p className="materi-date">{material.date}</p>
+          {loading ? (
+            <div className="loading">Memuat materi...</div>
+          ) : error ? (
+            <div className="error">{error}</div>
+          ) : materials.length === 0 ? (
+            <div className="no-materials">Tidak ada materi yang tersedia</div>
+          ) : (
+            <div className="materi-grid">
+              {materials.map(material => (
+                <div key={material.id} className="materi-card">
+                  <div className="materi-image" style={{
+                    backgroundImage: material.thumbnail_url ? `url(${material.thumbnail_url})` : 'none'
+                  }}></div>
+                  <div className="materi-info">
+                    <h3>{material.title}</h3>
+                    <p className="materi-level">{material.description || material.level}</p>
+                    <p className="materi-date">
+                      {material.date_published ? new Date(material.date_published).toLocaleDateString('id-ID', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      }) : 'Tanggal tidak tersedia'}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </section>
       </main>
 
