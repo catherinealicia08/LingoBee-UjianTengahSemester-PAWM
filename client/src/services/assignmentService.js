@@ -50,7 +50,10 @@ export const assignmentService = {
 
       console.log('🔑 Uploading with token:', token.substring(0, 20) + '...');
 
-      const response = await fetch('http://lingobee.vercel.app/api/assignments/upload', {
+
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+
+      const response = await fetch(`${API_BASE_URL}/assignments/upload`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
