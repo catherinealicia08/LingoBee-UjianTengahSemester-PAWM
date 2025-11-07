@@ -42,11 +42,26 @@ git clone https://github.com/catherinealicia08/LingoBee-UjianTengahSemester-PAWM
 cd LingoBee-UjianTengahSemester-PAWM
 ```
 ### 2️⃣ Install Dependencies
+Masuk ke folder client dan server, lalu install dependency masing-masing:
 ```bash
+cd client
+npm install
+```
+```bash
+cd server
 npm install
 ```
 ### 3️⃣ Jalankan Aplikasi
+Buka dua terminal terpisah
+
+**Terminal 1**
 ```bash
+cd client
+npm run dev
+```
+**Terminal 2**
+```bash
+cd server
 npm run dev
 ```
 ---
