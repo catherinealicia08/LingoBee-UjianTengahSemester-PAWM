@@ -7,7 +7,7 @@
   gap: 0;
 }
 
-/* ========== MAIN CONTENT ========== */
+
 .practice-content {
   padding: 24px 40px;
   overflow-y: auto;
@@ -15,7 +15,6 @@
 }
 
 
-/* ========== BREADCRUMB ========== */
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -44,7 +43,7 @@
   font-weight: 600;
 }
 
-/* ========== PRACTICE SECTIONS ========== */
+
 .practice-sections {
   display: flex;
   flex-direction: column;
@@ -60,7 +59,6 @@
   transition: all 0.3s ease;
 }
 
-/* Locked Section */
 .practice-section.section-locked {
   opacity: 0.7;
   pointer-events: none;
@@ -70,7 +68,6 @@
   opacity: 0.8;
 }
 
-/* ========== SECTION HEADER ========== */
 .section-header {
   padding: 18px 24px;
   display: flex;
@@ -122,7 +119,7 @@
   transform: scale(1.05);
 }
 
-/* ========== PRACTICE PATH ========== */
+
 .practice-path {
   position: relative;
   min-height: 400px;
@@ -131,7 +128,6 @@
   background: linear-gradient(180deg, #e8f0f8 0%, #d4e6f7 100%);
 }
 
-/* Locked Path Overlay */
 .practice-path.path-locked {
   filter: grayscale(0.5);
 }
@@ -171,7 +167,7 @@
   color: #666;
 }
 
-/* SVG Path Lines */
+
 .path-lines {
   position: absolute;
   top: 0;
@@ -182,7 +178,7 @@
   z-index: 1;
 }
 
-/* ========== BEE CHARACTER ========== */
+
 .bee-character {
   position: absolute;
   z-index: 5;
@@ -204,7 +200,7 @@
   }
 }
 
-/* ========== PRACTICE NODES ========== */
+
 .practice-node {
   position: absolute;
   width: 75px;
@@ -222,7 +218,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
-/* Unlocked nodes - Interactive hover */
+
 .practice-node.unlocked {
   background: #ffffff;
   border: 5px solid #e5e5e5;
@@ -240,7 +236,7 @@
   transition: all 0.1s ease;
 }
 
-/* Locked nodes - No interaction */
+
 .practice-node.locked {
   background: #e8e8e8;
   border: 5px solid #d2d2d2;
@@ -253,7 +249,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
-/* Completed nodes */
+
 .practice-node.completed {
   background: linear-gradient(135deg, #fde68a 0%, #fbbf24 100%);
   border: 5px solid #f59e0b;
@@ -264,7 +260,7 @@
   box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
 }
 
-/* Node Icons */
+
 .node-icon {
   font-size: 36px;
   display: block;
@@ -276,7 +272,7 @@
   transform: scale(1.1);
 }
 
-/* Specific Node Type Colors */
+
 .practice-node.star.unlocked {
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
   border: 5px solid #fbbf24;
@@ -342,7 +338,7 @@
   border: 5px solid #d2d2d2;
 }
 
-/* Pulse Animation for Current Unlocked Node */
+
 .practice-node.unlocked:not(.completed) {
   animation: pulse-node 2.5s ease-in-out infinite;
 }
@@ -356,49 +352,89 @@
   }
 }
 
-/* ========== RESPONSIVE ========== */
+
 @media (max-width: 1200px) {
   .practice-root {
     grid-template-columns: 200px 1fr;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .practice-root {
     grid-template-columns: 1fr;
   }
-  
+}
+
+@media (max-width: 768px) {
   .practice-content {
     padding: 16px;
   }
   
   .practice-path {
-    min-height: 420px;
-    height: 420px;
-    padding: 20px;
+    min-height: 380px;
+    height: 380px;
+    padding: 24px;
   }
   
   .bee-image {
-    width: 90px;
+    width: 95px;
   }
   
   .practice-node {
-    width: 65px;
-    height: 65px;
+    width: 68px;
+    height: 68px;
   }
   
   .node-icon {
-    font-size: 32px;
+    font-size: 30px;
   }
   
   .lock-message {
-    padding: 20px 24px;
+    padding: 18px 24px;
   }
   
   .lock-icon {
-    font-size: 40px;
+    font-size: 42px;
   }
-  
+}
+
+@media (max-width: 425px) {
+  .practice-content {
+    padding: 12px;
+  }
+
+  .practice-path {
+    min-height: 350px;
+    height: 350px;
+    padding: 16px;
+  }
+
+  .bee-image {
+    width: 80px;
+  }
+
+  .practice-node {
+    width: 60px;
+    height: 60px;
+    border-width: 4px;
+  }
+
+  .node-icon {
+    font-size: 26px;
+  }
+
+  .section-title {
+    font-size: 17px;
+  }
+
+  .lock-message {
+    padding: 16px 20px;
+  }
+
+  .lock-icon {
+    font-size: 38px;
+  }
+
   .lock-message p {
     font-size: 14px;
   }

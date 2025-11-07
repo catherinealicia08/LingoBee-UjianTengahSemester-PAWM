@@ -7,7 +7,6 @@
   gap: 0;
 }
 
-/* ========== MAIN CONTENT ========== */
 .practice-details-content {
   padding: 0;
   overflow-y: auto;
@@ -15,7 +14,6 @@
   background: #fff;
 }
 
-/* ========== TOP BAR ========== */
 .practice-top-bar {
   display: flex;
   align-items: center;
@@ -89,7 +87,6 @@
   color: #fff;
 }
 
-/* ========== BREADCRUMB ========== */
 .breadcrumb-practice {
   display: flex;
   align-items: center;
@@ -114,14 +111,12 @@
   color: #999;
 }
 
-/* ========== QUESTION CONTAINER ========== */
 .question-container {
   max-width: 900px;
   margin: 0 auto;
   padding: 40px 20px;
 }
 
-/* ========== QUESTION HEADER ========== */
 .question-header {
   text-align: center;
   margin-bottom: 40px;
@@ -134,7 +129,6 @@
   margin: 0;
 }
 
-/* ========== QUESTION CONTENT ========== */
 .question-content {
   display: flex;
   align-items: center;
@@ -237,7 +231,6 @@
   line-height: 1.6;
 }
 
-/* ========== ANSWER AREA - DROP ZONE ========== */
 .answer-area {
   margin-bottom: 40px;
 }
@@ -267,7 +260,6 @@
   background: #eff6ff;
 }
 
-/* Drag over effect */
 .selected-words-area[data-drag-over="true"] {
   border-color: #10b981;
   background: #d1fae5;
@@ -307,7 +299,6 @@
   font-style: italic;
 }
 
-/* ========== WORDS BANK - DRAG SOURCE ========== */
 .words-bank {
   display: flex;
   flex-wrap: wrap;
@@ -362,13 +353,12 @@
   box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
 }
 
-/* Dragging state */
+
 .word-chip[draggable="true"]:active {
   cursor: grabbing;
   opacity: 0.5;
 }
 
-/* ========== ACTION BUTTONS ========== */
 .action-buttons {
   display: flex;
   justify-content: center;
@@ -424,7 +414,6 @@
   transform: scale(0.96);
 }
 
-/* ========== FEEDBACK BANNER ========== */
 .feedback-banner {
   position: fixed;
   bottom: 0;
@@ -470,50 +459,105 @@
   font-size: 32px;
 }
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 1200px) {
   .practice-details-root {
     grid-template-columns: 200px 1fr;
   }
-  
-  .feedback-banner {
-    right: 0;
+}
+
+@media (max-width: 1024px) {
+  .practice-details-root {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  .practice-details-root {
+  .practice-details-content {
+    padding: 16px;
+  }
+
+  .practice-header h1 {
+    font-size: 24px;
+  }
+
+  .practice-info-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
-  
-  .practice-top-bar {
-    padding: 12px 20px;
+
+  .question-card {
+    padding: 20px;
   }
-  
-  .question-content {
-    flex-direction: column;
+
+  .question-text {
+    font-size: 15px;
   }
-  
-  .bee-character-img {
-    width: 100px;
-  }
-  
-  .speech-bubble {
-    max-width: 100%;
-  }
-  
-  .speech-bubble::before,
-  .speech-bubble::after {
-    display: none;
-  }
-  
-  .feedback-banner {
-    left: 0;
-    right: 0;
-  }
-  
-  .word-chip {
-    padding: 10px 20px;
+
+  .option-btn {
+    padding: 14px 18px;
     font-size: 14px;
+  }
+
+  .submit-section {
+    padding: 20px;
+  }
+
+  .submit-btn,
+  .back-btn {
+    padding: 14px 28px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 425px) {
+  .practice-details-content {
+    padding: 12px;
+  }
+
+  .practice-header h1 {
+    font-size: 20px;
+  }
+
+  .info-card {
+    padding: 12px;
+  }
+
+  .info-label,
+  .info-value {
+    font-size: 13px;
+  }
+
+  .question-card {
+    padding: 16px;
+  }
+
+  .question-number {
+    font-size: 13px;
+  }
+
+  .question-text {
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+
+  .options-list {
+    gap: 10px;
+  }
+
+  .option-btn {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .submit-section {
+    padding: 16px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .submit-btn,
+  .back-btn {
+    width: 100%;
+    padding: 12px;
   }
 }

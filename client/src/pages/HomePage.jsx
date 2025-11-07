@@ -25,15 +25,14 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Modal state
+
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [modalType, setModalType] = useState('material'); // 'material' or 'news'
+  const [modalType, setModalType] = useState('material'); 
 
-  // Get token from localStorage
+ 
   const token = localStorage.getItem('access_token');
 
-  // Fetch featured news
   useEffect(() => {
     const fetchFeaturedNews = async () => {
       try {
@@ -56,7 +55,6 @@ export default function HomePage() {
     }
   }, [token]);
 
-  // Fetch materials
   useEffect(() => {
     const fetchMaterials = async () => {
       setLoading(true);
@@ -87,7 +85,6 @@ export default function HomePage() {
     }
   }, [token, filters]);
 
-  // Fetch material filters
   useEffect(() => {
     const fetchFilters = async () => {
       try {
@@ -106,24 +103,20 @@ export default function HomePage() {
     }
   }, [token]);
 
-  // Handle search
   const handleSearch = () => {
     setFilters(prev => ({ ...prev, search: searchQuery }));
   };
 
-  // Handle filter change
   const handleFilterChange = (filterType, value) => {
     setFilters(prev => ({ ...prev, [filterType]: value }));
   };
 
-  // Handle open modal
   const openModal = (item, type) => {
     setSelectedItem(item);
     setModalType(type);
     setModalOpen(true);
   };
 
-  // Handle close modal
   const closeModal = () => {
     setModalOpen(false);
     setSelectedItem(null);
@@ -265,7 +258,6 @@ export default function HomePage() {
 
       <RightSidebar />
 
-      {/* Modal */}
       <MaterialModal 
         isOpen={modalOpen}
         onClose={closeModal}

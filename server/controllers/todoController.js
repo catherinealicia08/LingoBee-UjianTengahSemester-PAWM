@@ -1,6 +1,5 @@
 import { supabase } from '../config/supabase.js';
 
-// Get all todos for current user
 export const getTodos = async (req, res) => {
   try {
     const { data: todos, error } = await supabase
@@ -21,7 +20,6 @@ export const getTodos = async (req, res) => {
   }
 };
 
-// Create new todo
 export const createTodo = async (req, res) => {
   try {
     const { text, deadline } = req.body;
@@ -33,7 +31,6 @@ export const createTodo = async (req, res) => {
       });
     }
 
-    // Get max position for new todo
     const { data: lastTodo } = await supabase
       .from('todos')
       .select('position')
@@ -74,7 +71,6 @@ export const createTodo = async (req, res) => {
   }
 };
 
-// Update todo (toggle checked or update text)
 export const updateTodo = async (req, res) => {
   try {
     const { id } = req.params;
@@ -89,7 +85,7 @@ export const updateTodo = async (req, res) => {
       .from('todos')
       .update(updateData)
       .eq('id', id)
-      .eq('user_id', req.user.id) // Ensure user owns this todo
+      .eq('user_id', req.user.id)
       .select()
       .single();
 
@@ -116,10 +112,9 @@ export const updateTodo = async (req, res) => {
   }
 };
 
-// Reorder todos
 export const reorderTodos = async (req, res) => {
   try {
-    const { todos } = req.body; // Array of {id, position}
+    const { todos } = req.body;
 
     if (!Array.isArray(todos)) {
       return res.status(400).json({ 
@@ -128,7 +123,6 @@ export const reorderTodos = async (req, res) => {
       });
     }
 
-    // Update positions
     const updates = todos.map((todo, index) => 
       supabase
         .from('todos')
@@ -152,7 +146,6 @@ export const reorderTodos = async (req, res) => {
   }
 };
 
-// Delete todo
 export const deleteTodo = async (req, res) => {
   try {
     const { id } = req.params;
@@ -161,7 +154,7 @@ export const deleteTodo = async (req, res) => {
       .from('todos')
       .delete()
       .eq('id', id)
-      .eq('user_id', req.user.id); // Ensure user owns this todo
+      .eq('user_id', req.user.id);
 
     if (error) throw error;
 

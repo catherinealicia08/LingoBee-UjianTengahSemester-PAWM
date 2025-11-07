@@ -70,7 +70,7 @@
 
 .register-box {
   width: 100%;
-  max-width: 420px; /* Same as login */
+  max-width: 420px; 
   text-align: left;
   animation: fadeIn 0.8s ease-out 0.3s both;
 }
@@ -86,7 +86,6 @@
   background-clip: text;
 }
 
-/* Error Banner */
 .error-banner {
   display: flex;
   align-items: center;
@@ -111,7 +110,6 @@
   75% { transform: translateX(6px); }
 }
 
-/* Form Row - 2 columns */
 .form-row {
   display: flex;
   gap: 12px;
@@ -248,7 +246,7 @@
   color: #ffd700;
 }
 
-/* Animations */
+
 @keyframes slideInRight {
   from {
     opacity: 0;
@@ -265,12 +263,111 @@
   to { opacity: 1; }
 }
 
-@media (max-width: 900px) {
-  .register-root { flex-direction: column; }
-  .left-image { min-height: 200px; max-height: 35vh; }
-  .register-right { padding: 28px 20px; width: 100%; min-width: 100%; max-width: 100%; }
-  .logo-itb-white { right: 14px; top: 14px; width: 44px; height: 44px; }
-  .register-box h1 { font-size: 26px; margin-bottom: 20px; }
-  .form-row { flex-direction: column; gap: 0; }
-  .field { margin-bottom: 14px; }
+
+@media (max-width: 1024px) {
+  .register-root {
+    grid-template-columns: 1fr;
+  }
+
+  .register-left {
+    display: none;
+  }
+
+  .register-right {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .register-right {
+    padding: 24px;
+  }
+
+  .logo-itb-white {
+    width: 60px;
+  }
+
+  .register-box {
+    padding: 28px;
+  }
+
+  .register-box h1 {
+    font-size: 26px;
+  }
+
+  .input-group label {
+    font-size: 13px;
+  }
+
+  .input-group input {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .register-btn {
+    padding: 13px;
+    font-size: 15px;
+  }
+
+  .login-link {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 425px) {
+  .register-right {
+    padding: 20px 16px;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+
+  .logo-itb-white {
+    width: 55px;
+  }
+
+  .register-box {
+    padding: 24px 20px;
+  }
+
+  .register-box h1 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .register-box p {
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+
+  .input-group {
+    margin-bottom: 16px;
+  }
+
+  .input-group input {
+    padding: 11px 14px;
+    font-size: 13px;
+  }
+
+  .register-btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .login-link {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 375px) {
+  .register-box {
+    padding: 20px 16px;
+  }
+
+  .register-box h1 {
+    font-size: 20px;
+  }
+
+  .input-group input {
+    padding: 10px 12px;
+  }
 }

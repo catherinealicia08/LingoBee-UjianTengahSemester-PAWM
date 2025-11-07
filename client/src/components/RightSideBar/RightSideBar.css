@@ -8,7 +8,6 @@
 }
 
 
-/* USER PROFILE CARD */
 .user-profile-card {
   text-align: center;
   margin-bottom: 16px;
@@ -115,7 +114,6 @@
   color: #fff;
 }
 
-/* DATE TIME PILLS */
 .datetime-pills {
   display: flex;
   gap: 6px;
@@ -135,7 +133,7 @@
   backdrop-filter: blur(10px);
 }
 
-/* CALENDAR WIDGET */
+
 .calendar-widget {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 14px;
@@ -218,7 +216,7 @@
 }
 
 
-/* TODO WIDGET */
+
 .todo-widget {
   margin-bottom: 16px;
 }
@@ -237,7 +235,7 @@
   margin: 0;
 }
 
-/* Add Todo Form */
+
 .todo-add-form {
   display: flex;
   flex-direction: column;
@@ -287,7 +285,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Todo List Items */
+
 .todo-list {
   display: flex;
   flex-direction: column;
@@ -393,7 +391,7 @@
   box-shadow: 0 3px 6px rgba(244, 67, 54, 0.4);
 }
 
-/* Scrollbar for todo list */
+
 .todo-list::-webkit-scrollbar {
   width: 5px;
 }
@@ -412,16 +410,54 @@
   background: rgba(255, 255, 255, 0.5);
 }
 
-/* ========== RESPONSIVE ========== */
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
   .right-sidebar {
-    display: none;
+    width: 100%;
+    max-height: none;
+    position: static;
+    padding: 20px;
+  }
+
+  .calendar-widget {
+    max-width: 600px;
+    margin: 0 auto 16px;
+  }
+
+  .todo-widget {
+    max-width: 600px;
+    margin: 0 auto;
   }
 }
 
-.todo-empty {
-  text-align: center;
-  padding: 10px;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 14px;
+@media (max-width: 768px) {
+  .right-sidebar {
+    padding: 16px;
+  }
+
+  .profile-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .datetime-pills {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 425px) {
+  .profile-details h3 {
+    font-size: 14px;
+  }
+
+  .profile-details p {
+    font-size: 11px;
+  }
+
+  .calendar-widget {
+    padding: 12px;
+  }
+
+  .todo-list {
+    max-height: 200px;
+  }
 }

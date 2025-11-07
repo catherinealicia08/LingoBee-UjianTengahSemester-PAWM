@@ -10,26 +10,24 @@ export default function AssignmentDetailsPage() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // States
+  
   const [assignment, setAssignment] = useState(null);
   const [submission, setSubmission] = useState(null);
   const [classComments, setClassComments] = useState([]);
   const [privateComments, setPrivateComments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Modal states
   const [showClassCommentModal, setShowClassCommentModal] = useState(false);
   const [showPrivateCommentModal, setShowPrivateCommentModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
 
-  // Form states
+
   const [classCommentText, setClassCommentText] = useState('');
   const [privateCommentText, setPrivateCommentText] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [submissionText, setSubmissionText] = useState('');
   const [uploading, setUploading] = useState(false);
 
-  // Load assignment details
   useEffect(() => {
     loadAssignmentDetails();
   }, [id]);
@@ -57,11 +55,11 @@ export default function AssignmentDetailsPage() {
     }
   }
 
-  // Handle file selection
+
   function handleFileSelect(e) {
     const file = e.target.files[0];
     if (file) {
-      // Check file size (max 10MB)
+  
       if (file.size > 10 * 1024 * 1024) {
         alert('File size must be less than 10MB');
         return;
@@ -70,7 +68,7 @@ export default function AssignmentDetailsPage() {
     }
   }
 
-  // Handle file upload and submission
+
   async function handleSubmitWork() {
     if (!selectedFile && !submissionText.trim()) {
       alert('Please select a file or enter submission text');
@@ -82,7 +80,7 @@ export default function AssignmentDetailsPage() {
       let fileUrl = null;
       let fileName = null;
 
-      // Upload file if selected
+
       if (selectedFile) {
         const uploadResponse = await assignmentService.uploadFile(selectedFile);
         
@@ -96,7 +94,6 @@ export default function AssignmentDetailsPage() {
         fileName = uploadResponse.fileName;
       }
 
-      // Submit assignment
       const submitResponse = await assignmentService.submitAssignment(
         id,
         fileUrl,
@@ -109,7 +106,7 @@ export default function AssignmentDetailsPage() {
         setShowUploadModal(false);
         setSelectedFile(null);
         setSubmissionText('');
-        loadAssignmentDetails(); // Reload to get updated status
+        loadAssignmentDetails(); 
       } else {
         alert('Failed to submit assignment: ' + submitResponse.error);
       }
@@ -121,7 +118,6 @@ export default function AssignmentDetailsPage() {
     }
   }
 
-  // Handle mark as done (without file)
   async function handleMarkAsDone() {
     const confirm = window.confirm('Mark this assignment as done?');
     if (!confirm) return;
@@ -141,7 +137,6 @@ export default function AssignmentDetailsPage() {
     }
   }
 
-  // Handle add class comment
   async function handleAddClassComment() {
     if (!classCommentText.trim()) {
       alert('Please enter a comment');
@@ -155,7 +150,7 @@ export default function AssignmentDetailsPage() {
         alert('Comment added successfully! 💬');
         setShowClassCommentModal(false);
         setClassCommentText('');
-        loadAssignmentDetails(); // Reload comments
+        loadAssignmentDetails(); 
       } else {
         alert('Failed to add comment: ' + response.error);
       }
@@ -165,7 +160,7 @@ export default function AssignmentDetailsPage() {
     }
   }
 
-  // Handle add private comment
+
   async function handleAddPrivateComment() {
     if (!privateCommentText.trim()) {
       alert('Please enter a comment');
@@ -187,7 +182,7 @@ export default function AssignmentDetailsPage() {
         alert('Private comment added successfully! 🔒');
         setShowPrivateCommentModal(false);
         setPrivateCommentText('');
-        loadAssignmentDetails(); // Reload comments
+        loadAssignmentDetails(); 
       } else {
         alert('Failed to add private comment: ' + response.error);
       }
@@ -197,7 +192,6 @@ export default function AssignmentDetailsPage() {
     }
   }
 
-  // Format date
   function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { 
@@ -253,7 +247,6 @@ export default function AssignmentDetailsPage() {
           <span className="breadcrumb-current">{assignment.title}</span>
         </div>
 
-        {/* Assignment Details Card */}
         <div className="assignment-details-card">
           <div className="assignment-header">
             <div className="assignment-icon">📋</div>
@@ -277,7 +270,6 @@ export default function AssignmentDetailsPage() {
             </div>
           </div>
 
-          {/* Class Comments Section */}
           <div className="class-comments-section">
             <div className="comments-header">
               <span className="comments-icon">👥</span>
@@ -291,7 +283,6 @@ export default function AssignmentDetailsPage() {
             </button>
           </div>
 
-          {/* Display Class Comments */}
           {classComments.length > 0 && (
             <div className="comments-list">
               {classComments.map((comment) => (
@@ -308,7 +299,6 @@ export default function AssignmentDetailsPage() {
           )}
         </div>
 
-        {/* Your Work Card */}
         <div className="your-work-card-main">
           <div className="work-header">
             <h3>Your Work</h3>
@@ -317,7 +307,7 @@ export default function AssignmentDetailsPage() {
             </span>
           </div>
 
-          {/* Show submitted file if exists */}
+
           {submission?.submission_file_url && (
             <div className="submitted-file">
               <p><strong>Submitted File:</strong></p>
@@ -342,7 +332,6 @@ export default function AssignmentDetailsPage() {
             </div>
           )}
 
-          {/* Show submission text if exists */}
           {submission?.submission_text && (
             <div className="submitted-text">
               <p><strong>Your Answer:</strong></p>
@@ -366,14 +355,14 @@ export default function AssignmentDetailsPage() {
             Mark As Done
           </button>
 
-          {/* Private Comments Section */}
+   
           <div className="private-comments-section">
             <div className="private-header">
               <span className="private-icon">🔒</span>
               <h4>Private Comments ({privateComments.length})</h4>
             </div>
 
-            {/* Display Private Comments */}
+   
             {privateComments.length > 0 && (
               <div className="private-comments-list">
                 {privateComments.map((comment) => (
@@ -409,9 +398,7 @@ export default function AssignmentDetailsPage() {
 
       <RightSidebar />
 
-      {/* ===== MODALS ===== */}
 
-      {/* Class Comment Modal */}
       {showClassCommentModal && (
         <div className="modal-overlay" onClick={() => setShowClassCommentModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -455,7 +442,7 @@ export default function AssignmentDetailsPage() {
         </div>
       )}
 
-      {/* Private Comment Modal */}
+   
       {showPrivateCommentModal && (
         <div className="modal-overlay" onClick={() => setShowPrivateCommentModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -499,7 +486,7 @@ export default function AssignmentDetailsPage() {
         </div>
       )}
 
-      {/* Upload/Submit Work Modal */}
+ 
       {showUploadModal && (
         <div className="modal-overlay" onClick={() => setShowUploadModal(false)}>
           <div className="modal-content upload-modal" onClick={(e) => e.stopPropagation()}>
@@ -513,7 +500,7 @@ export default function AssignmentDetailsPage() {
               </button>
             </div>
             <div className="modal-body">
-              {/* File Upload */}
+        
               <div className="upload-section">
                 <label className="upload-label">Upload File (Optional)</label>
                 <input
@@ -536,7 +523,7 @@ export default function AssignmentDetailsPage() {
                 <p className="upload-hint">Max file size: 10MB. Supported: PDF, DOC, XLSX, etc.</p>
               </div>
 
-              {/* Text Submission */}
+
               <div className="text-section">
                 <label className="upload-label">Or Enter Your Answer (Optional)</label>
                 <textarea

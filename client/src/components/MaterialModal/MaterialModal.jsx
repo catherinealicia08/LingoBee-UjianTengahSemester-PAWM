@@ -18,7 +18,6 @@ export default function MaterialModal({ isOpen, onClose, item, type }) {
         </button>
 
         <div className={styles.modalContent}>
-          {/* Cover Image */}
           {(item.image_url || item.thumbnail_url) && (
             <div
               className={styles.modalCoverImage}
@@ -27,8 +26,6 @@ export default function MaterialModal({ isOpen, onClose, item, type }) {
               }}
             />
           )}
-
-          {/* Title and Meta Info */}
           <div className={styles.modalHeader}>
             <h1 className={styles.modalTitle}>{item.title}</h1>
 
@@ -64,21 +61,18 @@ export default function MaterialModal({ isOpen, onClose, item, type }) {
             )}
           </div>
 
-          {/* Description */}
           {item.description && (
             <div className={styles.modalDescription}>
               <p>{item.description}</p>
             </div>
           )}
-
-          {/* Content */}
           {item.content && (
             <div className={styles.modalBody}>
               <div className={styles.modalTextContent}>{item.content}</div>
             </div>
           )}
 
-          {/* Content URL */}
+
           {item.content_url && (
             <div className={styles.modalFooter}>
               <a
@@ -92,7 +86,7 @@ export default function MaterialModal({ isOpen, onClose, item, type }) {
             </div>
           )}
 
-          {/* Link URL */}
+
           {item.link_url && item.link_url !== '#' && (
             <div className={styles.modalFooter}>
               <a

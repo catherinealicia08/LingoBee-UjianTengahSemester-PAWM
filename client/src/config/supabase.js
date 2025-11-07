@@ -1,16 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Ambil dari environment variables
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Validasi environment variables
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('❌ Missing Supabase environment variables!');
+  console.error(' Missing Supabase environment variables!');
   console.error('Please check your .env file');
 }
 
-// Create Supabase client
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
@@ -18,4 +16,4 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   }
 });
 
-console.log('✅ Supabase client initialized');
+console.log(' Supabase client initialized');

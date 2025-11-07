@@ -22,9 +22,9 @@ export default function RegisterPage() {
     setError('');
   }
 
-  // ✅ FIX: preventDefault untuk stop refresh
+
   async function handleSubmit(e) {
-    e.preventDefault(); // ✅ PENTING: Stop form refresh
+    e.preventDefault(); 
 
     if (!form.fullName || !form.nim || !form.password) {
       setError('Nama, NIM, dan Password harus diisi');
@@ -53,7 +53,7 @@ export default function RegisterPage() {
       if (response.success) {
         console.log('✅ Registration successful');
         alert('🎉 Registrasi berhasil! Selamat datang di LingoBee!');
-        window.location.href = '/homepage'; // ✅ Hard redirect
+        window.location.href = '/homepage'; 
       } else {
         setError(response.error || 'Registrasi gagal');
       }

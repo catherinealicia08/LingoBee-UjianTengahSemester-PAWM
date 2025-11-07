@@ -7,7 +7,6 @@
   gap: 0;
 }
 
-/* ========== MAIN CONTENT ========== */
 .assignment-content {
   padding: 24px 40px;
   overflow-y: auto;
@@ -15,7 +14,6 @@
 }
 
 
-/* ========== BREADCRUMB ========== */
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -44,7 +42,6 @@
   font-weight: 600;
 }
 
-/* ========== ASSIGNMENT TABLE ========== */
 .assignment-table-container {
   background: #fff;
   border-radius: 16px;
@@ -98,7 +95,6 @@
   color: #333;
 }
 
-/* Status Badge */
 .status-badge {
   padding: 6px 16px;
   border-radius: 20px;
@@ -118,7 +114,6 @@
   color: #fff;
 }
 
-/* Open Button */
 .open-btn {
   background: linear-gradient(135deg, #5dade2 0%, #3498db 100%);
   color: #fff;
@@ -143,7 +138,6 @@
   transform: translateY(0);
 }
 
-/* ========== PAGINATION ========== */
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -208,25 +202,81 @@
   border-color: #0063a3;
 }
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 1200px) {
   .assignment-root {
     grid-template-columns: 200px 1fr;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .assignment-root {
     grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 768px) {
   .assignment-content {
     padding: 16px;
   }
-  .assignment-table-container {
-    overflow-x: auto;
+
+  .assignments-header h1 {
+    font-size: 26px;
   }
-  .pagination {
-    flex-direction: column;
+
+  .assignments-grid {
+    grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .assignment-card {
+    padding: 20px;
+  }
+
+  .assignment-title {
+    font-size: 18px;
+  }
+
+  .deadline-text {
+    font-size: 13px;
+  }
+
+  .view-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 425px) {
+  .assignment-content {
+    padding: 12px;
+  }
+
+  .assignments-header h1 {
+    font-size: 22px;
+  }
+
+  .assignment-card {
+    padding: 16px;
+  }
+
+  .assignment-title {
+    font-size: 16px;
+  }
+
+  .assignment-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .status-badge,
+  .deadline-badge {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .view-btn {
+    width: 100%;
+    padding: 12px;
   }
 }

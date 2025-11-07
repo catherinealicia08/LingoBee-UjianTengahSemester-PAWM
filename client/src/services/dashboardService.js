@@ -1,12 +1,9 @@
 import { apiClient } from './api.js';
 
 export const dashboardService = {
-  // Get featured news
   getFeaturedNews: async (token) => {
     return await apiClient.get('/dashboard/featured-news', token);
   },
-
-  // Get materials with optional filters
   getMaterials: async (token, filters = {}) => {
     const params = new URLSearchParams();
     if (filters.chapter) params.append('chapter', filters.chapter);
@@ -19,12 +16,10 @@ export const dashboardService = {
     return await apiClient.get(endpoint, token);
   },
 
-  // Get dashboard stats
   getStats: async (token) => {
     return await apiClient.get('/dashboard/stats', token);
   },
 
-  // Get material filters
   getMaterialFilters: async (token) => {
     return await apiClient.get('/dashboard/material-filters', token);
   }

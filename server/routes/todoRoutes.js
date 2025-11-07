@@ -10,7 +10,6 @@ import { authenticateToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// All routes require authentication
 router.use(authenticateToken);
 
 router.get('/', getTodos);

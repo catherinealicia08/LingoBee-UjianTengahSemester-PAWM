@@ -15,20 +15,18 @@ export default function RightSidebar() {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [todos, setTodos] = useState([]);
 
-  // ✅ Use custom hook for profile
+
   const { data: profileData } = useApi(() => authService.getProfile(), []);
-  
-  // ✅ Use custom hook for todos
+
   const { data: todosData, loading: isLoadingTodos, refetch: refetchTodos } = useApi(() => todoService.getTodos(), []);
 
-  // Update todos when data changes
   useEffect(() => {
     if (todosData?.success && todosData.todos) {
       setTodos(todosData.todos);
     }
   }, [todosData]);
 
-  // Get user profile
+
   const getUserProfile = () => {
     if (profileData?.success && profileData.user) {
       return {
@@ -56,7 +54,7 @@ export default function RightSidebar() {
 
   const userProfile = getUserProfile();
 
-  // Close dropdown when clicking outside
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -70,7 +68,7 @@ export default function RightSidebar() {
     };
   }, []);
 
-  // Update time every second
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
@@ -229,7 +227,7 @@ export default function RightSidebar() {
 
   return (
     <aside className="right-sidebar">
-      {/* User Profile Info with Dropdown */}
+
       <div className="user-profile-card" ref={dropdownRef}>
         <div className="profile-avatar-wrapper" onClick={toggleProfileDropdown}>
           <img 
@@ -255,13 +253,11 @@ export default function RightSidebar() {
         )}
       </div>
 
-      {/* Date & Time Pills */}
       <div className="datetime-pills">
         <div className="date-pill">{formattedDate}</div>
         <div className="time-pill">{formattedTime}</div>
       </div>
 
-      {/* Calendar Widget */}
       <div className="calendar-widget">
         <h3>Calendar</h3>
         <div className="calendar-header">
@@ -292,7 +288,6 @@ export default function RightSidebar() {
         </div>
       </div>
 
-      {/* To Do List */}
       <div className="todo-widget">
         <div className="todo-header">
           <h3>To Do List</h3>

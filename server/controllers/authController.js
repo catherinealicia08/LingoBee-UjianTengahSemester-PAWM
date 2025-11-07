@@ -1,7 +1,6 @@
 import { supabase } from '../config/supabase.js';
 import bcrypt from 'bcryptjs';
 
-// ✅ REGISTER - WITHOUT hearts
 export const register = async (req, res) => {
   try {
     const { fullName, nim, password } = req.body;
@@ -45,7 +44,6 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ✅ Insert WITHOUT hearts
     const { data: newUser, error: insertError } = await supabase
       .from('users')
       .insert({
@@ -90,7 +88,6 @@ export const register = async (req, res) => {
   }
 };
 
-// ✅ LOGIN - WITHOUT hearts
 export const login = async (req, res) => {
   try {
     const { nim, password } = req.body;
@@ -159,7 +156,6 @@ export const login = async (req, res) => {
   }
 };
 
-// Get profile (WITHOUT hearts)
 export const getProfile = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -190,7 +186,6 @@ export const getProfile = async (req, res) => {
   }
 };
 
-// Logout
 export const logout = async (req, res) => {
   try {
     res.json({

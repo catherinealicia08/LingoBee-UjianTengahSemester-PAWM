@@ -10,16 +10,10 @@ import './PracticePage.css';
 
 export default function PracticePage() {
   const navigate = useNavigate();
-
   const [sections, setSections] = useState([]);
-
-  // ✅ Fetch sections from API
   const { data: sectionsData, loading: loadingSections } = useApi(() => practiceService.getSections(), []);
-
-  // ✅ Fetch completed nodes
   const { data: completedData, loading: loadingCompleted } = useApi(() => practiceService.getCompletedNodes(), []);
 
-  // Get user profile (WITHOUT hearts)
   const getUserProfile = () => {
     const localUser = authService.getCurrentUser();
     return localUser || { streak: 0, level: 1, xp: 0 };
@@ -27,22 +21,18 @@ export default function PracticePage() {
 
   const userProfile = getUserProfile();
 
-  // Load sections from API
   useEffect(() => {
     if (sectionsData?.success && sectionsData.sections) {
-      console.log('✅ Sections loaded:', sectionsData.sections);
       setSections(sectionsData.sections);
     }
   }, [sectionsData]);
 
-  // Apply completion status when completed nodes load
   useEffect(() => {
     if (completedData?.success && sections.length > 0) {
       const completedNodesArray = completedData.completedNodes || [];
-      console.log('✅ Completed nodes loaded:', completedNodesArray);
       applyCompletionStatus(completedNodesArray);
     }
-  }, [completedData, sections.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [completedData, sections.length]);
 
   function applyCompletionStatus(completedNodes) {
     setSections(prevSections => {
@@ -50,23 +40,16 @@ export default function PracticePage() {
         const updatedNodes = section.nodes.map((node, nodeIndex) => {
           const nodeKey = `${section.id}-${node.id}`;
           const isCompleted = completedNodes.includes(nodeKey);
-
           let shouldUnlock = false;
-
-          // First node of first section is always unlocked
           if (section.id === 1 && nodeIndex === 0) {
             shouldUnlock = true;
           }
-
-          // Unlock next node if previous node is completed
           if (nodeIndex > 0) {
             const prevNodeKey = `${section.id}-${section.nodes[nodeIndex - 1].id}`;
             if (completedNodes.includes(prevNodeKey)) {
               shouldUnlock = true;
             }
           }
-
-          // Unlock first node of next section if all previous section nodes completed
           if (nodeIndex === 0 && sectionIndex > 0) {
             const prevSection = prevSections[sectionIndex - 1];
             const allPrevCompleted = prevSection.nodes.every(n => {
@@ -77,20 +60,10 @@ export default function PracticePage() {
               shouldUnlock = true;
             }
           }
-
-          return {
-            ...node,
-            completed: isCompleted,
-            unlocked: shouldUnlock
-          };
+          return { ...node, completed: isCompleted, unlocked: shouldUnlock };
         });
-
-        return {
-          ...section,
-          nodes: updatedNodes
-        };
+        return { ...section, nodes: updatedNodes };
       });
-
       return updatedSections;
     });
   }
@@ -103,63 +76,39 @@ export default function PracticePage() {
     if (sectionIndex > 0) {
       const previousSection = sections[sectionIndex - 1];
       const previousSectionCompleted = isSectionCompleted(previousSection.nodes);
-
       if (!previousSectionCompleted) {
         alert('🔒 Complete the previous section first!');
         return;
       }
     }
-
     if (!node.unlocked) {
       alert('🔒 This lesson is locked! Complete previous lessons first.');
       return;
     }
-
-    // ✅ REMOVED hearts check - hearts are session-based now
-
-    console.log(`🎯 Starting practice: Section ${section.id}, Node ${node.id}`);
     navigate(`/practice/${section.id}/${node.id}`);
   }
 
   function getNodeIcon(type, unlocked, completed) {
-    if (!unlocked) {
-      return '🔒';
-    }
-
-    if (completed) {
-      return '✅';
-    }
-
-    switch(type) {
-      case 'star':
-        return '⭐';
-      case 'practice':
-        return '🎯';
-      case 'lesson':
-        return '🎧';
-      case 'book':
-        return '📖';
-      case 'trophy':
-        return '🏆';
-      case 'chest':
-        return '🎁';
-      case 'microphone':
-        return '🎤';
-      default:
-        return '⚪';
+    if (!unlocked) return '🔒';
+    if (completed) return '✅';
+    switch (type) {
+      case 'star': return '⭐';
+      case 'practice': return '🎯';
+      case 'lesson': return '🎧';
+      case 'book': return '📖';
+      case 'trophy': return '🏆';
+      case 'chest': return '🎁';
+      case 'microphone': return '🎤';
+      default: return '⚪';
     }
   }
 
   function getSectionStatus(sectionIndex) {
     if (sectionIndex === 0) return 'active';
-
     for (let i = 0; i < sectionIndex; i++) {
       const previousSectionCompleted = isSectionCompleted(sections[i].nodes);
-      if (!previousSectionCompleted) {
-        return 'locked';
-      }
+      if (!previousSectionCompleted) return 'locked';
     }
-
     return 'active';
   }
 
@@ -169,22 +118,9 @@ export default function PracticePage() {
     return (
       <div className="practice-root">
         <LeftSidebar activePage="practice" />
-        <main className="practice-content" style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100vh'
-        }}>
+        <main className="practice-content" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
           <div style={{ textAlign: 'center' }}>
-            <div style={{
-              width: '50px',
-              height: '50px',
-              border: '5px solid #f3f3f3',
-              borderTop: '5px solid #c084fc',
-              borderRadius: '50%',
-              animation: 'spin 1s linear infinite',
-              margin: '0 auto 20px'
-            }}></div>
+            <div style={{ width: '50px', height: '50px', border: '5px solid #f3f3f3', borderTop: '5px solid #c084fc', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 20px' }}></div>
             <p style={{ fontSize: '1.2rem', color: '#666' }}>Loading practice data...</p>
             <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}`}</style>
           </div>
@@ -197,19 +133,13 @@ export default function PracticePage() {
   return (
     <div className="practice-root">
       <LeftSidebar activePage="practice" />
-
       <main className="practice-content">
         <header className="top-header">
           <div className="level-info">
             <span className="streak">{userProfile?.streak || 0} 🔥</span>
             <span className="level">Lvl {userProfile?.level || 1}</span>
             <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{
-                  width: `${userProfile ? (userProfile.xp % 100) : 0}%`
-                }}
-              ></div>
+              <div className="progress-fill" style={{ width: `${userProfile ? (userProfile.xp % 100) : 0}%` }}></div>
             </div>
           </div>
         </header>
@@ -223,16 +153,12 @@ export default function PracticePage() {
         <div className="practice-sections">
           {sections.map((section, sectionIndex) => {
             const sectionStatus = getSectionStatus(sectionIndex);
-
             return (
               <div key={section.id} className={`practice-section ${sectionStatus === 'locked' ? 'section-locked' : ''}`}>
                 <div className="section-header" style={{ backgroundColor: section.color }}>
                   <div className="section-info">
                     <span className="section-label">{section.section}</span>
-                    <h2 className="section-title">
-                      {section.title}
-                      {sectionStatus === 'locked' && ' 🔒'}
-                    </h2>
+                    <h2 className="section-title">{section.title}{sectionStatus === 'locked' && ' 🔒'}</h2>
                   </div>
                   <button className="section-menu-btn">☰</button>
                 </div>
@@ -243,13 +169,11 @@ export default function PracticePage() {
                       <img src={beeImage} alt="Bee Character" className="bee-image" />
                     </div>
                   )}
-
                   {sectionIndex === 1 && (
                     <div className="bee-character" style={{ bottom: '8%', left: '8%' }}>
                       <img src={beeImage} alt="Bee Character" className="bee-image" />
                     </div>
                   )}
-
                   {sectionIndex === 2 && (
                     <div className="bee-character" style={{ bottom: '10%', right: '8%' }}>
                       <img src={beeImage} alt="Bee Character" className="bee-image" />
@@ -261,15 +185,12 @@ export default function PracticePage() {
                       if (index < section.nodes.length - 1) {
                         const current = section.nodes[index];
                         const next = section.nodes[index + 1];
-
                         const x1 = parseFloat(current.position.left);
                         const y1 = parseFloat(current.position.top);
                         const x2 = parseFloat(next.position.left);
                         const y2 = parseFloat(next.position.top);
-
                         const controlX = (x1 + x2) / 2;
                         const controlY = (y1 + y2) / 2;
-
                         return (
                           <path
                             key={`line-${node.id}`}
@@ -289,10 +210,7 @@ export default function PracticePage() {
                     <button
                       key={node.id}
                       className={`practice-node ${node.type} ${node.unlocked ? 'unlocked' : 'locked'} ${node.completed ? 'completed' : ''}`}
-                      style={{
-                        top: node.position.top,
-                        left: node.position.left
-                      }}
+                      style={{ top: node.position.top, left: node.position.left }}
                       onClick={() => handleNodeClick(node, section, sectionIndex)}
                     >
                       <span className="node-icon">{getNodeIcon(node.type, node.unlocked, node.completed)}</span>
@@ -313,7 +231,6 @@ export default function PracticePage() {
           })}
         </div>
       </main>
-
       <RightSidebar />
     </div>
   );

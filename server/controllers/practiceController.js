@@ -1,8 +1,5 @@
 import { supabase } from '../config/supabase.js';
 
-// ========================================
-// GET ALL SECTIONS WITH NODES
-// ========================================
 export const getSections = async (req, res) => {
   try {
     console.log('📚 Fetching practice sections...');
@@ -34,7 +31,6 @@ export const getSections = async (req, res) => {
           unlocked: node.is_unlocked_by_default,
           completed: false,
           xpReward: node.xp_reward,
-          // ✅ REMOVED heartsCost
           position: {
             top: node.position_top,
             left: node.position_left
@@ -57,9 +53,6 @@ export const getSections = async (req, res) => {
   }
 };
 
-// ========================================
-// GET COMPLETED NODES FOR USER
-// ========================================
 export const getCompletedNodes = async (req, res) => {
   try {
     console.log('📊 Fetching completed nodes for user:', req.user.id);
@@ -88,9 +81,6 @@ export const getCompletedNodes = async (req, res) => {
   }
 };
 
-// ========================================
-// GET QUESTIONS FOR NODE
-// ========================================
 export const getQuestions = async (req, res) => {
   try {
     const { sectionId, nodeId } = req.params;
@@ -131,9 +121,6 @@ export const getQuestions = async (req, res) => {
   }
 };
 
-// ========================================
-// MARK NODE AS COMPLETED (WITH XP REWARD)
-// ========================================
 export const completeNode = async (req, res) => {
   try {
     const { sectionId, nodeId, score = 100, timeSpent = 0 } = req.body;
@@ -149,7 +136,6 @@ export const completeNode = async (req, res) => {
       });
     }
 
-    // ✅ Get node details for XP reward ONLY (no hearts_cost)
     const { data: node, error: nodeError } = await supabase
       .from('practice_nodes')
       .select('xp_reward')
@@ -160,7 +146,6 @@ export const completeNode = async (req, res) => {
 
     const xpReward = node.xp_reward || 10;
 
-    // ✅ Get current user data (WITHOUT hearts)
     const { data: user, error: userError } = await supabase
       .from('users')
       .select('xp, level, streak')
@@ -169,11 +154,9 @@ export const completeNode = async (req, res) => {
 
     if (userError) throw userError;
 
-    // Calculate new values
     const newXp = user.xp + xpReward;
     const newLevel = Math.floor(newXp / 100) + 1;
 
-    // Insert completed node (upsert to avoid duplicates)
     const { error: insertError } = await supabase
       .from('completed_nodes')
       .upsert([
@@ -182,7 +165,6 @@ export const completeNode = async (req, res) => {
           section_id: parseInt(sectionId),
           node_id: parseInt(nodeId),
           xp_earned: xpReward,
-          // ✅ REMOVED hearts_spent
           score: parseInt(score),
           time_spent_seconds: parseInt(timeSpent)
         }
@@ -190,7 +172,6 @@ export const completeNode = async (req, res) => {
 
     if (insertError) throw insertError;
 
-    // ✅ Update user progress (WITHOUT hearts)
     const { data: updatedUser, error: updateError } = await supabase
       .from('users')
       .update({
@@ -204,7 +185,6 @@ export const completeNode = async (req, res) => {
 
     if (updateError) throw updateError;
 
-    // Log activity
     await supabase
       .from('user_activity_log')
       .insert([{

@@ -17,9 +17,9 @@ export default function LoginPage() {
     setError('');
   }
 
-  // ✅ FIX: preventDefault untuk stop refresh
+
   async function handleSubmit(e) {
-    e.preventDefault(); // ✅ PENTING: Stop form refresh
+    e.preventDefault(); 
     
     if (!form.nim || !form.password) {
       setError('NIM dan password harus diisi');
@@ -41,7 +41,7 @@ export default function LoginPage() {
 
       if (response.success) {
         console.log('✅ Login successful, redirecting...');
-        window.location.href = '/homepage'; // ✅ Hard redirect
+        window.location.href = '/homepage'; 
       } else {
         setError(response.error || 'Login gagal');
       }

@@ -10,7 +10,7 @@ export const authenticateToken = async (req, res, next) => {
       });
     }
 
-    // Decode simple token
+
     try {
       const decoded = JSON.parse(Buffer.from(token, 'base64').toString());
       

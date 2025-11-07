@@ -2,7 +2,6 @@ import { apiClient } from './api';
 import { authService } from './authService';
 
 export const assignmentService = {
-  // Get all assignments for current user
   getAssignments: async () => {
     try {
       const token = authService.getToken();
@@ -18,7 +17,6 @@ export const assignmentService = {
     }
   },
 
-  // Get assignment details
   getAssignmentDetails: async (id) => {
     try {
       const token = authService.getToken();
@@ -34,7 +32,6 @@ export const assignmentService = {
     }
   },
 
-  // ✅ FIX: Upload file via backend (dengan FormData)
   uploadFile: async (file) => {
     try {
       console.log('📤 Starting file upload via backend...');
@@ -48,18 +45,15 @@ export const assignmentService = {
         };
       }
 
-      // Create FormData
       const formData = new FormData();
       formData.append('file', file);
 
       console.log('🔑 Uploading with token:', token.substring(0, 20) + '...');
 
-      // Upload via backend
       const response = await fetch('http://localhost:5000/api/assignments/upload', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
-          // ❌ JANGAN tambahkan Content-Type! Browser akan set otomatis untuk FormData
         },
         body: formData
       });
@@ -90,7 +84,6 @@ export const assignmentService = {
     }
   },
 
-  // Submit assignment
   submitAssignment: async (assignmentId, fileUrl, fileName, submissionText) => {
     try {
       const token = authService.getToken();
@@ -114,7 +107,6 @@ export const assignmentService = {
     }
   },
 
-  // Mark as done
   markAsDone: async (assignmentId) => {
     try {
       const token = authService.getToken();
@@ -133,7 +125,6 @@ export const assignmentService = {
     }
   },
 
-  // Add class comment
   addClassComment: async (assignmentId, comment) => {
     try {
       const token = authService.getToken();
@@ -152,7 +143,6 @@ export const assignmentService = {
     }
   },
 
-  // Add private comment
   addPrivateComment: async (submissionId, comment) => {
     try {
       const token = authService.getToken();

@@ -7,14 +7,11 @@
   gap: 0;
 }
 
-/* ========== MAIN CONTENT ========== */
 .main-content {
   padding: 24px 40px;
   overflow-y: auto;
   max-height: 100vh;
 }
-
-
 
 .page-title {
   font-size: 32px;
@@ -23,7 +20,6 @@
   color: #333;
 }
 
-/* ========== SEARCH BAR ========== */
 .search-bar {
   display: flex;
   gap: 8px;
@@ -62,7 +58,6 @@
   transform: scale(1.05);
 }
 
-/* ========== FEATURED CAROUSEL ========== */
 .featured-carousel {
   position: relative;
   margin-bottom: 36px;
@@ -179,7 +174,6 @@
   box-shadow: 0 4px 12px rgba(0, 99, 163, 0.3);
 }
 
-/* Carousel Indicators */
 .carousel-indicators {
   display: flex;
   justify-content: center;
@@ -209,7 +203,6 @@
   border-radius: 4px;
 }
 
-/* ========== MATERI SECTION ========== */
 .materi-section h2 {
   font-size: 24px;
   font-weight: 700;
@@ -294,7 +287,6 @@
   color: #999;
 }
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 1200px) {
   .home-root {
     grid-template-columns: 200px 1fr;
@@ -327,20 +319,125 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .home-root {
-    grid-template-columns: 1fr;
-  }
-  .main-content {
-    padding: 16px;
-  }
-  .materi-grid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  }
-  .top-header {
-    flex-direction: column;
-    gap: 12px;
-    align-items: flex-start;
+    grid-template-columns: 200px 1fr;
   }
 }
 
+@media (max-width: 1024px) {
+  .home-root {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .main-content {
+    padding: 20px 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .featured-card {
+    flex-direction: column;
+  }
+  
+  .featured-image {
+    flex: 0 0 auto;
+    width: 100%;
+    height: 180px;
+  }
+  
+  .carousel-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+  
+  .carousel-btn.prev {
+    left: 8px;
+  }
+  
+  .carousel-btn.next {
+    right: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 16px;
+  }
+
+  .page-title {
+    font-size: 26px;
+  }
+
+  .search-bar input {
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+
+  .search-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
+  }
+
+  .featured-content h2 {
+    font-size: 20px;
+  }
+
+  .featured-content p {
+    font-size: 14px;
+  }
+
+  .materi-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 425px) {
+  .main-content {
+    padding: 12px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  .search-bar {
+    gap: 6px;
+  }
+
+  .search-bar input {
+    padding: 10px 14px;
+  }
+
+  .featured-card {
+    padding: 20px;
+  }
+
+  .featured-image {
+    height: 150px;
+  }
+
+  .carousel-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+
+  .materi-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .materi-filters {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .filter-select {
+    width: 100%;
+  }
+}

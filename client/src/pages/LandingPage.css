@@ -73,7 +73,6 @@
   animation: fadeInScale 1s ease-out;
 }
 
-/* Button hover effects */
 .group-2, .div {
   position: absolute;
   left: 50%;
@@ -153,7 +152,6 @@
 .text-wrapper-3 { color: #fff; }
 .text-wrapper-2 { color: #0063a3; }
 
-/* Animations */
 @keyframes fadeInDown {
   from {
     opacity: 0;
@@ -187,9 +185,108 @@
   }
 }
 
-@media (max-width: 900px) {
-  .logo-img { height: 34px; }
-  .badge-img { width: 48px; height: 48px; right: 12px; top: 12px; }
-  .logo2-img { width: min(88vw, 720px); max-height: 56vh; }
-  .group-2, .div { width: 80%; }
+
+@media (max-width: 1024px) {
+  .lp-container {
+    padding: 20px;
+  }
+
+  .lp-header {
+    padding: 16px 20px;
+  }
+
+  .logo-img {
+    width: 160px;
+  }
+
+  .badge-img {
+    width: 45px;
+  }
+
+  .logo2-img {
+    width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lp-root {
+    background-size: cover;
+    background-position: center;
+  }
+
+  .lp-container {
+    padding: 16px;
+  }
+
+  .lp-header {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .logo-img {
+    width: 140px;
+  }
+
+  .badge-img {
+    width: 40px;
+  }
+
+  .logo2-img {
+    width: 160px;
+    margin: 20px auto 0;
+  }
+
+  .group-2, .div {
+    padding: 10px 24px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 425px) {
+  .lp-container {
+    padding: 12px;
+  }
+
+  .lp-header {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .logo-img {
+    width: 120px;
+  }
+
+  .badge-img {
+    width: 36px;
+  }
+
+  .logo2-img {
+    width: 140px;
+  }
+
+  .group-2, .div {
+    padding: 8px 20px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 375px) {
+  .logo-img {
+    width: 100px;
+  }
+
+  .badge-img {
+    width: 32px;
+  }
+
+  .logo2-img {
+    width: 120px;
+  }
+
+  .group-2, .div {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
 }

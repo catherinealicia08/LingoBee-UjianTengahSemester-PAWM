@@ -1,10 +1,8 @@
 import { supabase } from '../config/supabase.js';
 
-// Get featured news/articles
 export const getFeaturedNews = async (req, res) => {
   try {
     console.log('📰 Fetching featured news...');
-    
     const { data: news, error } = await supabase
       .from('featured_news')
       .select('*')
@@ -21,7 +19,6 @@ export const getFeaturedNews = async (req, res) => {
     }
 
     console.log(`✅ Found ${news?.length || 0} featured news items`);
-    
     res.json({
       success: true,
       news: news || []
@@ -35,7 +32,6 @@ export const getFeaturedNews = async (req, res) => {
   }
 };
 
-// Get learning materials with filters
 export const getMaterials = async (req, res) => {
   try {
     const { chapter, category, search } = req.query;
@@ -47,7 +43,6 @@ export const getMaterials = async (req, res) => {
       .eq('is_active', true)
       .order('date_published', { ascending: false });
 
-    // Apply filters
     if (chapter) {
       query = query.eq('chapter', chapter);
     }
@@ -71,7 +66,6 @@ export const getMaterials = async (req, res) => {
     }
 
     console.log(`✅ Found ${materials?.length || 0} materials`);
-
     res.json({
       success: true,
       materials: materials || []
@@ -85,13 +79,11 @@ export const getMaterials = async (req, res) => {
   }
 };
 
-// Get dashboard stats for user
 export const getDashboardStats = async (req, res) => {
   try {
     const userId = req.user.id;
     console.log('📊 Fetching dashboard stats for user:', userId);
 
-    // Get user info
     const { data: user, error: userError } = await supabase
       .from('users')
       .select('level, xp, streak')
@@ -106,13 +98,11 @@ export const getDashboardStats = async (req, res) => {
       });
     }
 
-    // Get completed practices count from completed_nodes
     const { count: completedPractices, error: practiceError } = await supabase
       .from('completed_nodes')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId);
 
-    // Get completed assignments count
     const { count: completedAssignments, error: assignmentError } = await supabase
       .from('assignment_submissions')
       .select('*', { count: 'exact', head: true })
@@ -146,12 +136,9 @@ export const getDashboardStats = async (req, res) => {
   }
 };
 
-// Get material filters (chapters and categories)
 export const getMaterialFilters = async (req, res) => {
   try {
     console.log('🔍 Fetching material filters...');
-    
-    // Get unique chapters
     const { data: chapters, error: chaptersError } = await supabase
       .from('learning_materials')
       .select('chapter')
@@ -159,7 +146,6 @@ export const getMaterialFilters = async (req, res) => {
       .not('chapter', 'is', null)
       .order('chapter');
 
-    // Get unique categories
     const { data: categories, error: categoriesError } = await supabase
       .from('learning_materials')
       .select('category')

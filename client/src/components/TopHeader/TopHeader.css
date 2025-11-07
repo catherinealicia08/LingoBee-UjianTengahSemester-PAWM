@@ -55,3 +55,79 @@
   color: #666;
   white-space: nowrap;
 }
+
+
+@media (max-width: 768px) {
+  .top-header {
+    padding: 12px 0;
+    margin-bottom: 16px;
+  }
+
+  .level-info {
+    gap: 12px;
+  }
+
+  .streak {
+    font-size: 18px;
+  }
+
+  .level {
+    font-size: 14px;
+  }
+
+  .progress-bar {
+    width: 150px;
+    height: 10px;
+  }
+
+  .xp-text {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 425px) {
+  .level-info {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .streak {
+    font-size: 16px;
+  }
+
+  .progress-bar {
+    width: 100%;
+    max-width: 180px;
+  }
+}
+
+
+
+.hamburger-btn {
+  display: none; 
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  margin-right: 12px;
+}
+
+.hamburger-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 1024px) {
+  .hamburger-btn {
+    display: block;
+  }
+  
+  .top-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}

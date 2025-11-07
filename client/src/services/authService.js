@@ -1,7 +1,6 @@
 import { apiClient } from './api';
 
 export const authService = {
-  // Register new user
   register: async (registerData) => {
     try {
       const response = await apiClient.post('/auth/register', {
@@ -11,7 +10,6 @@ export const authService = {
       });
 
       if (response.success && response.token) {
-        // Store token and user
         localStorage.setItem('access_token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
 
@@ -25,7 +23,6 @@ export const authService = {
     }
   },
 
-  // Login user
   login: async (loginData) => {
     try {
       const response = await apiClient.post('/auth/login', {
@@ -34,7 +31,6 @@ export const authService = {
       });
 
       if (response.success && response.token) {
-        // Store token and user
         localStorage.setItem('access_token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
 
@@ -48,10 +44,9 @@ export const authService = {
     }
   },
 
-  // Logout user
+
   logout: async () => {
     try {
-      // Clear local storage
       localStorage.removeItem('access_token');
       localStorage.removeItem('user');
 
@@ -63,7 +58,6 @@ export const authService = {
     }
   },
 
-  // Get current user
   getCurrentUser: () => {
     try {
       const userStr = localStorage.getItem('user');
@@ -74,17 +68,17 @@ export const authService = {
     }
   },
 
-  // Get token
+  
   getToken: () => {
     return localStorage.getItem('access_token');
   },
 
-  // Check if authenticated
+  
   isAuthenticated: () => {
     return !!localStorage.getItem('access_token');
   },
 
-  // Get profile
+  
   getProfile: async () => {
     try {
       const token = authService.getToken();
@@ -105,7 +99,7 @@ export const authService = {
     }
   },
 
-  // Initialize session
+  
   initializeSession: async () => {
     try {
       const token = localStorage.getItem('access_token');
@@ -116,7 +110,6 @@ export const authService = {
         hasUser: !!user 
       });
 
-      // ✅ Kalau ada token dan user, return true
       if (token && user) {
         console.log('✅ Session found');
         return true;

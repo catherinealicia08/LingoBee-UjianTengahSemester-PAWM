@@ -36,7 +36,6 @@ export const apiClient = {
     }
   },
 
-  // ✅ Add PUT method
   put: async (endpoint, data, token) => {
     try {
       const headers = { 'Content-Type': 'application/json' };
@@ -55,7 +54,6 @@ export const apiClient = {
     }
   },
 
-  // ✅ Add DELETE method
   delete: async (endpoint, token) => {
     try {
       const headers = { 'Content-Type': 'application/json' };

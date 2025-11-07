@@ -7,7 +7,7 @@
   gap: 0;
 }
 
-/* ========== MAIN CONTENT ========== */
+
 .assignment-details-content {
   padding: 24px 40px;
   overflow-y: auto;
@@ -15,7 +15,6 @@
 }
 
 
-/* ========== BREADCRUMB ========== */
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -44,7 +43,7 @@
   font-weight: 600;
 }
 
-/* ========== ASSIGNMENT DETAILS CARD ========== */
+
 .assignment-details-card {
   background: #fff;
   border-radius: 16px;
@@ -84,7 +83,7 @@
   margin: 0;
 }
 
-/* ========== ASSIGNMENT CONTENT ========== */
+
 .assignment-content-body {
   line-height: 1.8;
   color: #333;
@@ -143,7 +142,7 @@
   font-weight: 600;
 }
 
-/* ========== CLASS COMMENTS ========== */
+
 .class-comments-section {
   margin-top: 32px;
   padding-top: 24px;
@@ -190,7 +189,6 @@
   box-shadow: 0 4px 12px rgba(0, 99, 163, 0.3);
 }
 
-/* ========== YOUR WORK CARD (MAIN CONTENT) ========== */
 .your-work-card-main {
   background: #fff;
   border-radius: 16px;
@@ -275,7 +273,7 @@
   box-shadow: 0 4px 12px rgba(0, 99, 163, 0.3);
 }
 
-/* ========== PRIVATE COMMENTS (MAIN CONTENT) ========== */
+
 .private-comments-section {
   padding-top: 20px;
   border-top: 1px solid #e0e0e0;
@@ -320,7 +318,6 @@
   box-shadow: 0 4px 12px rgba(0, 99, 163, 0.3);
 }
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 1200px) {
   .assignment-details-root {
     grid-template-columns: 200px 1fr;
@@ -348,7 +345,6 @@
 }
 
 
-/* ========== COMMENTS LIST ========== */
 .comments-list {
   margin-top: 20px;
   display: flex;
@@ -393,7 +389,6 @@
   line-height: 1.6;
 }
 
-/* ========== SUBMITTED WORK ========== */
 .submitted-file,
 .submitted-text {
   background: #e8f5e9;
@@ -438,7 +433,7 @@
   color: #4caf50;
 }
 
-/* ========== PRIVATE COMMENTS ========== */
+
 .private-comments-list {
   margin-top: 16px;
   display: flex;
@@ -468,7 +463,7 @@
   margin-top: 8px;
 }
 
-/* ========== MODAL OVERLAY ========== */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -492,7 +487,6 @@
   }
 }
 
-/* ========== MODAL CONTENT ========== */
 .modal-content {
   background: #fff;
   border-radius: 16px;
@@ -517,7 +511,7 @@
   }
 }
 
-/* ========== MODAL HEADER ========== */
+
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -554,7 +548,7 @@
   transform: rotate(90deg);
 }
 
-/* ========== MODAL BODY ========== */
+
 .modal-body {
   padding: 24px;
 }
@@ -576,7 +570,6 @@
   box-shadow: 0 0 0 3px rgba(0, 99, 163, 0.1);
 }
 
-/* ========== UPLOAD SECTION ========== */
 .upload-section,
 .text-section {
   margin-bottom: 20px;
@@ -648,7 +641,7 @@
   margin-top: 8px;
 }
 
-/* ========== MODAL FOOTER ========== */
+
 .modal-footer {
   display: flex;
   gap: 12px;
@@ -694,22 +687,105 @@
   cursor: not-allowed;
 }
 
-/* ========== RESPONSIVE ========== */
+@media (max-width: 1200px) {
+  .assignment-details-root {
+    grid-template-columns: 200px 1fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .assignment-details-root {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
-  .modal-content {
-    width: 95%;
-    max-width: none;
-  }
-  
-  .modal-header {
+  .assignment-details-content {
     padding: 16px;
   }
-  
-  .modal-body {
+
+  .assignment-header h1 {
+    font-size: 24px;
+  }
+
+  .assignment-info-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .question-card {
+    padding: 20px;
+  }
+
+  .question-text {
+    font-size: 15px;
+  }
+
+  .option-btn {
+    padding: 14px 18px;
+    font-size: 14px;
+  }
+
+  .submit-section {
+    padding: 20px;
+  }
+
+  .submit-btn,
+  .back-btn {
+    padding: 14px 28px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 425px) {
+  .assignment-details-content {
+    padding: 12px;
+  }
+
+  .assignment-header h1 {
+    font-size: 20px;
+  }
+
+  .info-card {
+    padding: 12px;
+  }
+
+  .info-label,
+  .info-value {
+    font-size: 13px;
+  }
+
+  .question-card {
     padding: 16px;
   }
-  
-  .modal-footer {
+
+  .question-number {
+    font-size: 13px;
+  }
+
+  .question-text {
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+
+  .options-list {
+    gap: 10px;
+  }
+
+  .option-btn {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .submit-section {
     padding: 16px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .submit-btn,
+  .back-btn {
+    width: 100%;
+    padding: 12px;
   }
 }

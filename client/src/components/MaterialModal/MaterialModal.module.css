@@ -172,24 +172,98 @@
 }
 
 @media (max-width: 768px) {
-  .modalBackdrop {
-    padding: 0;
+  .modalContainer {
+    max-width: 95%;
+    margin: 20px auto;
+    max-height: 90vh;
   }
 
-  .modalContainer {
-    max-height: 100vh;
-    border-radius: 0;
+  .modalCloseBtn {
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
   }
 
   .modalCoverImage {
-    height: 250px;
-  }
-
-  .modalHeader {
-    padding: 24px 20px 12px;
+    height: 180px;
   }
 
   .modalTitle {
-    font-size: 24px;
+    font-size: 20px;
+  }
+
+  .modalMeta {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .badge {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .modalDescription {
+    font-size: 14px;
+  }
+
+  .modalActions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 425px) {
+  .modalContainer {
+    max-width: 100%;
+    margin: 10px;
+    border-radius: 12px;
+  }
+
+  .modalCoverImage {
+    height: 150px;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .modalContent {
+    padding: 16px;
+  }
+
+  .modalHeader {
+    gap: 10px;
+  }
+
+  .modalTitle {
+    font-size: 18px;
+  }
+
+  .badge {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .modalDescription {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .modalActions {
+    padding-top: 16px;
+    gap: 8px;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    padding: 11px;
+    font-size: 13px;
   }
 }

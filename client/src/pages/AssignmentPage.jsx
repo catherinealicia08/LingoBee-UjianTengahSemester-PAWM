@@ -14,7 +14,6 @@ export default function AssignmentPage() {
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Load assignments from backend
   useEffect(() => {
     loadAssignments();
   }, []);
@@ -39,7 +38,6 @@ export default function AssignmentPage() {
     }
   }
 
-  // Pagination
   const totalPages = Math.ceil(assignments.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -49,7 +47,7 @@ export default function AssignmentPage() {
     navigate(`/assignment/${assignment.id}`);
   }
 
-  // Format date
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { 
@@ -88,7 +86,7 @@ export default function AssignmentPage() {
           <span className="breadcrumb-current">Assignment</span>
         </div>
 
-        {/* Assignment Table */}
+    
         <div className="assignment-table-container">
           {assignments.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px' }}>
@@ -134,7 +132,6 @@ export default function AssignmentPage() {
                 </tbody>
               </table>
 
-              {/* Pagination */}
               {totalPages > 1 && (
                 <div className="pagination">
                   <button 
