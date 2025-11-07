@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { assignmentService } from '../services/assignmentService';
-import LeftSidebar from '../components/LeftSidebar';
-import RightSidebar from '../components/RightSidebar';
+import LeftSidebar from '../components/LeftSidebar/LeftSidebar';
+import RightSidebar from '../components/RightSidebar/RightSidebar';
 import TopHeader from '../components/TopHeader/TopHeader';
 import './AssignmentDetailsPage.css';
 

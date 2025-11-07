@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LeftSidebar from '../components/LeftSidebar';
-import RightSidebar from '../components/RightSidebar';
+import LeftSidebar from '../components/LeftSidebar/LeftSidebar';
+import RightSidebar from '../components/RightSidebar/RightSidebar';
 import TopHeader from '../components/TopHeader/TopHeader';
 import MaterialModal from '../components/MaterialModal';
 import { dashboardService } from '../services/dashboardService';
