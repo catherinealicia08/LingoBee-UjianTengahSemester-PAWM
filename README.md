@@ -1,6 +1,7 @@
 # 🐝 LingoBee — Virtual Lab Bahasa Inggris ITB  
 > Ujian Tengah Semester — II3140 Pengembangan Aplikasi Web dan Mobile (PAWM)
 
+🔗 **Live Demo:** https://lingobee.vercel.app/
 ---
 
 ## 👥 Anggota Tim
