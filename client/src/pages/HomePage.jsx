@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LeftSidebar from '../components/LeftSidebar';
 import RightSidebar from '../components/RightSidebar';
 import TopHeader from '../components/TopHeader/TopHeader';
+import MaterialModal from '../components/MaterialModal';
 import { dashboardService } from '../services/dashboardService';
 import './HomePage.css';
 
@@ -23,6 +24,11 @@ export default function HomePage() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Modal state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [modalType, setModalType] = useState('material'); // 'material' or 'news'
 
   // Get token from localStorage
   const token = localStorage.getItem('access_token');
@@ -110,6 +116,19 @@ export default function HomePage() {
     setFilters(prev => ({ ...prev, [filterType]: value }));
   };
 
+  // Handle open modal
+  const openModal = (item, type) => {
+    setSelectedItem(item);
+    setModalType(type);
+    setModalOpen(true);
+  };
+
+  // Handle close modal
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedItem(null);
+  };
+
   function nextFeatured() {
     setCurrentFeatured((prev) => (prev + 1) % featuredNews.length);
   }
@@ -151,7 +170,12 @@ export default function HomePage() {
               <div className="featured-content">
                 <h2>{featuredNews[currentFeatured].title}</h2>
                 <p>{featuredNews[currentFeatured].description}</p>
-                <button className="read-btn">Read</button>
+                <button 
+                  className="read-btn"
+                  onClick={() => openModal(featuredNews[currentFeatured], 'news')}
+                >
+                  Read
+                </button>
               </div>
             </div>
 
@@ -211,7 +235,12 @@ export default function HomePage() {
           ) : (
             <div className="materi-grid">
               {materials.map(material => (
-                <div key={material.id} className="materi-card">
+                <div 
+                  key={material.id} 
+                  className="materi-card"
+                  onClick={() => openModal(material, 'material')}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className="materi-image" style={{
                     backgroundImage: material.thumbnail_url ? `url(${material.thumbnail_url})` : 'none'
                   }}></div>
@@ -235,6 +264,14 @@ export default function HomePage() {
       </main>
 
       <RightSidebar />
+
+      {/* Modal */}
+      <MaterialModal 
+        isOpen={modalOpen}
+        onClose={closeModal}
+        item={selectedItem}
+        type={modalType}
+      />
     </div>
   );
 }
