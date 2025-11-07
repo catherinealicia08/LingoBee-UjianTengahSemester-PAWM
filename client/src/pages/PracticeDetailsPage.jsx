@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useApi } from '../hooks/useApi';
 import { practiceService } from '../services/practiceService';
-import LeftSidebar from '../components/LeftSidebar/LeftSidebar';
-import RightSidebar from '../components/RightSidebar/RightSidebar';
+import LeftSidebar from '../components/LeftSidebar';   
+import RightSidebar from '../components/RightSidebar'; 
 import beeImage from '../assets/bee.png';
 import './PracticeDetailsPage.css';
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApi } from '../hooks/useApi';
-import LeftSidebar from '../components/LeftSidebar/LeftSidebar';
-import RightSidebar from '../components/RightSidebar/RightSidebar';
+import LeftSidebar from '../components/LeftSidebar';   
+import RightSidebar from '../components/RightSidebar'; 
 import { practiceService } from '../services/practiceService';
 import { authService } from '../services/authService';
 import beeImage from '../assets/bee.png';
